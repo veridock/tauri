@@ -78,12 +78,13 @@
     <script>
       // Check if PHP server is running and show appropriate message
       function checkServerAndReload() {
-        fetch('http://localhost:8088/pdf.php.svg')
+        const phpPort = import.meta.env.VITE_PHP_SERVER_PORT || '8088';
+        fetch(`http://localhost:${phpPort}/pdf.php.svg`)
           .then(response => {
             if (response.ok) {
               // Server is running, reload the object
               const processor = document.getElementById('pdf-processor');
-              processor.data = 'http://localhost:8088/pdf.php.svg?' + Date.now();
+              processor.data = `http://localhost:${phpPort}/pdf.php.svg?` + Date.now();
             }
           })
           .catch(error => {

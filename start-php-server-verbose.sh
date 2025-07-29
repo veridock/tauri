@@ -1,6 +1,15 @@
 #!/bin/bash
 
 # Enhanced PHP server with verbose logging
+# Load environment variables from .env file if it exists
+if [[ -f ".env" ]]; then
+    echo "📝 Loading environment variables from .env file..."
+    export $(grep -v '^#' .env | xargs)
+fi
+
+# Set default PHP server port if not already set
+export PHP_SERVER_PORT=${PHP_SERVER_PORT:-8088}
+
 LOG_DIR="logs"
 TIMESTAMP=$(date +"%Y%m%d_%H%M%S")
 PHP_LOG_FILE="${LOG_DIR}/php_server_${TIMESTAMP}.log"
@@ -12,8 +21,8 @@ mkdir -p "$LOG_DIR"
 
 echo "🚀 Starting Enhanced PHP Server with Verbose Logging..."
 echo "📁 Document root: $(pwd)"
-echo "📡 Server URL: http://localhost:8080"
-echo "🎯 PDF Processor: http://localhost:8080/pdf.php.svg"
+echo "📡 Server URL: http://localhost:${PHP_SERVER_PORT}"
+echo "🎯 PDF Processor: http://localhost:${PHP_SERVER_PORT}/pdf.php.svg"
 echo ""
 echo "📋 Log Files:"
 echo "   📝 Server Log: $PHP_LOG_FILE"
@@ -26,8 +35,8 @@ echo "=================================================="
 # Create initial log entries
 echo "[$(date '+%Y-%m-%d %H:%M:%S')] PHP Server Starting..." >> "$PHP_LOG_FILE"
 echo "[$(date '+%Y-%m-%d %H:%M:%S')] Document Root: $(pwd)" >> "$PHP_LOG_FILE"
-echo "[$(date '+%Y-%m-%d %H:%M:%S')] Server URL: http://localhost:8080" >> "$PHP_LOG_FILE"
-echo "[$(date '+%Y-%m-%d %H:%M:%S')] PDF Processor: http://localhost:8080/pdf.php.svg" >> "$PHP_LOG_FILE"
+echo "[$(date '+%Y-%m-%d %H:%M:%S')] Server URL: http://localhost:${PHP_SERVER_PORT}" >> "$PHP_LOG_FILE"
+echo "[$(date '+%Y-%m-%d %H:%M:%S')] PDF Processor: http://localhost:${PHP_SERVER_PORT}/pdf.php.svg" >> "$PHP_LOG_FILE"
 
 # Function to handle cleanup on exit
 cleanup() {
@@ -41,7 +50,7 @@ cleanup() {
 trap cleanup SIGINT SIGTERM
 
 # Start PHP server with verbose output and logging
-php -S localhost:8080 -t . \
+php -S localhost:${PHP_SERVER_PORT} -t . \
     -d log_errors=1 \
     -d error_log="$ERROR_LOG_FILE" \
     -d display_errors=1 \

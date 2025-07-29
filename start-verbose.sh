@@ -1,6 +1,16 @@
 #!/bin/bash
 
 # Enhanced startup script with verbose logging and file output
+# Load environment variables from .env file if it exists
+if [[ -f ".env" ]]; then
+    echo "📝 Loading environment variables from .env file..."
+    export $(grep -v '^#' .env | xargs)
+fi
+
+# Set default ports if not already set
+export VITE_PORT=${VITE_PORT:-1420}
+export PHP_SERVER_PORT=${PHP_SERVER_PORT:-8088}
+
 LOG_DIR="logs"
 TIMESTAMP=$(date +"%Y%m%d_%H%M%S")
 MAIN_LOG_FILE="${LOG_DIR}/app_startup_${TIMESTAMP}.log"
@@ -21,9 +31,9 @@ echo "   🔍 PHP Access Log: logs/php_access_${TIMESTAMP}.log"
 echo "   ❌ PHP Error Log: logs/php_error_${TIMESTAMP}.log"
 echo ""
 echo "🎯 Application URLs:"
-echo "   📡 Vite Dev Server: http://localhost:1420"
-echo "   🐘 PHP Server: http://localhost:8080"
-echo "   📄 PDF Processor: http://localhost:8080/pdf.php.svg"
+echo "   📡 Vite Dev Server: http://localhost:${VITE_PORT}"
+echo "   🐘 PHP Server: http://localhost:${PHP_SERVER_PORT}"
+echo "   📄 PDF Processor: http://localhost:${PHP_SERVER_PORT}/pdf.php.svg"
 echo ""
 echo "Press Ctrl+C to stop all servers"
 echo "=================================================================="
@@ -73,7 +83,7 @@ cleanup() {
     echo "[$(date '+%Y-%m-%d %H:%M:%S')] Application shutdown initiated" >> "$MAIN_LOG_FILE"
     
     # Kill any remaining processes
-    pkill -f "php -S localhost:8080" 2>/dev/null || true
+    pkill -f "php -S localhost:8088" 2>/dev/null || true
     pkill -f "vite" 2>/dev/null || true
     pkill -f "tauri dev" 2>/dev/null || true
     

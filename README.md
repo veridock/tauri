@@ -20,12 +20,100 @@ The app runs **SVG files with embedded PHP code** from `pdf.php.svg`, featuring:
 - **Real-time Status Updates**: Live feedback during file operations
 - **Sample File Management**: Built-in sample files for testing
 
+## ⚙️ Port Configuration
+
+The application supports flexible port configuration through environment variables and the `.env` file.
+
+### Default Ports
+
+- **Vite Dev Server**: `1420`
+- **PHP Server**: `8088`
+
+### Configuration Methods
+
+#### Method 1: Using .env File (Recommended)
+
+Create or edit the `.env` file in the project root:
+
+```bash
+# Vite Development Server Port
+VITE_PORT=1420
+
+# PHP Server Port
+PHP_SERVER_PORT=8088
+
+# PHP Server Port for frontend access (must be prefixed with VITE_)
+VITE_PHP_SERVER_PORT=8088
+
+# Enable verbose logging
+ENABLE_VERBOSE_LOGGING=false
+```
+
+#### Method 2: Environment Variables at Runtime
+
+Set environment variables before starting the application:
+
+```bash
+# Set custom ports
+export VITE_PORT=3000
+export PHP_SERVER_PORT=9000
+export VITE_PHP_SERVER_PORT=9000
+
+# Start the application
+./start-verbose.sh
+```
+
+#### Method 3: Inline Environment Variables
+
+Pass variables directly when running commands:
+
+```bash
+# Start with custom ports
+VITE_PORT=3000 PHP_SERVER_PORT=9000 VITE_PHP_SERVER_PORT=9000 ./start-verbose.sh
+
+# Or start individual components
+PHP_SERVER_PORT=9000 ./start-php-server.sh
+VITE_PORT=3000 npm run dev
+```
+
+### Port Configuration Files
+
+The following files automatically load and use port configuration:
+
+- **`.env`** - Main configuration file
+- **`vite.config.ts`** - Vite development server configuration
+- **`src-tauri/tauri.conf.json`** - Tauri app configuration (devUrl)
+- **`package.json`** - NPM script configurations
+- **`start-verbose.sh`** - Enhanced startup script
+- **`start.sh`** - Simple startup script
+- **`start-php-server.sh`** - PHP server startup script
+- **`start-php-server-verbose.sh`** - Enhanced PHP server script
+- **`index.html`** - Frontend PHP server port configuration
+
+### Troubleshooting Port Conflicts
+
+If you encounter "Port already in use" errors:
+
+```bash
+# Check what's using a port
+lsof -i :8088
+# or
+lsof -i :1420
+
+# Kill process using the port
+kill <PID>
+
+# Or use different ports
+VITE_PORT=3000 PHP_SERVER_PORT=9000 ./start-verbose.sh
+```
+
 ## 📁 Key Files
 
 - **`pdf.php.svg`** - Main SVG application with embedded PHP/JavaScript
 - **`php/index.php`** - Additional PHP backend scripts
 - **`src-tauri/`** - Rust backend for Tauri desktop app
 - **`scripts/`** - Installation scripts for different Linux distributions
+- **`.env`** - Environment configuration file for ports and settings
 
 ## 🛠 Installation
 

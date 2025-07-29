@@ -1,10 +1,20 @@
 #!/bin/bash
 
 # Simple script to start Tauri app with PHP server automatically
+# Load environment variables from .env file if it exists
+if [[ -f ".env" ]]; then
+    echo "📝 Loading environment variables from .env file..."
+    export $(grep -v '^#' .env | xargs)
+fi
+
+# Set default ports if not already set
+export VITE_PORT=${VITE_PORT:-1420}
+export PHP_SERVER_PORT=${PHP_SERVER_PORT:-8088}
+
 echo "🚀 Starting Tauri PDF Processor with PHP server..."
-echo "📡 PHP server will run on: http://localhost:8088"
+echo "📡 PHP server will run on: http://localhost:${PHP_SERVER_PORT}"
 echo "🖥️  Tauri app will start automatically"
-echo "📄 PDF processor will be available at: http://localhost:8088/pdf.php.svg"
+echo "📄 PDF processor will be available at: http://localhost:${PHP_SERVER_PORT}/pdf.php.svg"
 echo ""
 echo "Press Ctrl+C to stop both servers"
 echo "=========================================="
