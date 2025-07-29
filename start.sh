@@ -43,17 +43,25 @@ echo "  ✅ PHP Server Port: $PHP_SERVER_PORT"
 echo "  ✅ Vite Server Port: $VITE_PORT"
 echo "  ✅ SVG File: $VITE_FILE_PHP"
 
-# Step 3: Generate cross-language configuration
+# Step 3: Sync window size with SVG dimensions
 echo
-echo "⚙️ Step 3: Generating cross-language configuration..."
+echo "📐 Step 3: Syncing window size with SVG dimensions..."
+if ! node sync-window-size.js; then
+    echo "❌ Error: Failed to sync window dimensions"
+    exit 1
+fi
+
+# Step 4: Generate cross-language configuration
+echo
+echo "⚙️ Step 4: Generating cross-language configuration..."
 if ! node env.js; then
     echo "❌ Error: Failed to generate configuration files"
     exit 1
 fi
 
-# Step 4: Validate dependencies
+# Step 5: Validate dependencies
 echo
-echo "🔍 Step 4: Validating dependencies..."
+echo "🔍 Step 5: Validating dependencies..."
 
 # Check PHP
 if ! command -v php &> /dev/null; then
@@ -81,9 +89,9 @@ echo "  ✅ PHP: $(php --version | head -1)"
 echo "  ✅ Node.js: $(node --version)"
 echo "  ✅ SVG file: $VITE_FILE_PHP ($(stat -c%s "$VITE_FILE_PHP") bytes)"
 
-# Step 5: Check if ports are free
+# Step 6: Check if ports are free
 echo
-echo "🔍 Step 5: Checking port availability..."
+echo "🔍 Step 6: Checking port availability..."
 
 php_port_check=$(lsof -ti:$PHP_SERVER_PORT 2>/dev/null)
 if [[ -n "$php_port_check" ]]; then
@@ -102,9 +110,9 @@ fi
 echo "  ✅ Port $PHP_SERVER_PORT: Available"
 echo "  ✅ Port $VITE_PORT: Available"
 
-# Step 6: Start PHP Server in background
+# Step 7: Start PHP Server in background
 echo
-echo "🐘 Step 6: Starting PHP Server..."
+echo "🐘 Step 7: Starting PHP Server..."
 echo "  📡 URL: http://localhost:$PHP_SERVER_PORT"
 echo "  📁 Document root: $(pwd)"
 echo "  🎯 SVG application: http://localhost:$PHP_SERVER_PORT/$VITE_FILE_PHP"
@@ -131,9 +139,9 @@ else
     exit 1
 fi
 
-# Step 7: Start Tauri App
+# Step 8: Start Tauri App
 echo
-echo "🦀 Step 7: Starting Tauri Application..."
+echo "🦀 Step 8: Starting Tauri Application..."
 echo "  🌐 Frontend URL: http://localhost:$VITE_PORT"
 echo "  🖥️  Desktop app will open automatically"
 echo
@@ -149,9 +157,9 @@ npm run tauri dev
 echo
 echo "🏁 Tauri application closed."
 
-# Step 8: Cleanup
+# Step 9: Cleanup
 echo
-echo "🧹 Step 8: Cleaning up background processes..."
+echo "🧹 Step 9: Cleaning up background processes..."
 if kill -0 $PHP_PID 2>/dev/null; then
     echo "  🛑 Stopping PHP server (PID: $PHP_PID)..."
     kill $PHP_PID

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 1000 700">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xhtml="http://www.w3.org/1999/xhtml" width="100%" height="100%"
+     viewBox="0 0 1000 700">
     <?php
             // 1. Najpierw logika PHP (bez output!)
             $current_time = date('H:i:s');
@@ -101,49 +102,58 @@
     <text x="200" y="135" class="counter-text" id="completed-count">Completed: 0</text>
     <text x="350" y="135" class="counter-text" id="total-count">Total: 0</text>
 
-    <!-- Add Task Section -->
+    <!-- Add New Task Section -->
     <rect x="50" y="170" width="900" height="80" class="card"/>
     <text x="70" y="195" class="task-text">Add New Task:</text>
 
-    <!-- Task Input Area (SVG-based) -->
-    <rect x="70" y="205" width="500" height="35" class="input-area" id="task-input-area" onclick="focusTaskInput()"/>
-    <text x="80" y="227" class="task-text" id="task-input-text">Click to enter task description...</text>
+    <!-- Task Input Area (Modern HTML Input) -->
+    <foreignObject width="500" height="35" x="70" y="205">
+        <xhtml:input id="task-input" placeholder="Click to enter task description..."
+                     style="width:100%;height:100%;padding:8px;border-radius:6px;border:2px solid #4caf50;font-size:14px;background:rgba(255,255,255,0.2);color:#ffffff;"
+                     type="text"/>
+    </foreignObject>
 
-    <!-- Priority Selection -->
-    <g id="priority-selector">
-        <text x="590" y="220" class="task-text">Priority:</text>
-        <rect x="650" y="205" width="50" height="35" class="priority-low" rx="6" onclick="setPriority('low')"
-              id="priority-low"/>
-        <text x="675" y="227" class="btn-text">Low</text>
-        <rect x="710" y="205" width="60" height="35" class="priority-medium" rx="6" onclick="setPriority('medium')"
-              id="priority-medium"/>
-        <text x="740" y="227" class="btn-text">Med</text>
-        <rect x="780" y="205" width="50" height="35" class="priority-high" rx="6" onclick="setPriority('high')"
-              id="priority-high"/>
-        <text x="805" y="227" class="btn-text">High</text>
-        <rect x="840" y="205" width="60" height="35" class="priority-urgent" rx="6" onclick="setPriority('urgent')"
-              id="priority-urgent"/>
-        <text x="870" y="227" class="btn-text">Urgent</text>
-    </g>
+    <!-- Priority Selection (Modern HTML Select) -->
+    <text x="590" y="220" class="task-text">Priority:</text>
+    <foreignObject width="200" height="35" x="650" y="205">
+        <xhtml:select id="priority-selector"
+                      style="width:100%;height:100%;padding:6px;border-radius:6px;border:2px solid #4caf50;font-size:12px;background:rgba(255,255,255,0.1);color:#ffffff;">
+            <xhtml:option value="low">Low</xhtml:option>
+            <xhtml:option value="medium">Medium</xhtml:option>
+            <xhtml:option value="high">High</xhtml:option>
+            <xhtml:option value="urgent">Urgent</xhtml:option>
+        </xhtml:select>
+    </foreignObject>
 
-    <!-- Add Button -->
-    <rect x="850" y="260" width="100" height="35" class="btn" onclick="addNewTask()"/>
-    <text x="900" y="282" class="btn-text">Add Task</text>
+    <!-- Add Button (Modern HTML Button) -->
+    <foreignObject width="100" height="35" x="850" y="260">
+        <xhtml:button onclick="addNewTask()"
+                      style="width:100%;height:100%;padding:6px;border-radius:6px;border:2px solid #4caf50;font-size:12px;background:#4caf50;color:#ffffff;cursor:pointer;">
+            Add Task
+        </xhtml:button>
+    </foreignObject>
 
-    <!-- Tasks List Container -->
-    <g id="tasks-container">
+    <!-- Tasks List Container (No more g tag) -->
+    <rect x="50" y="300" width="900" height="320" class="card"/>
+    <text x="70" y="325" class="task-text">Tasks:</text>
+    <div id="tasks-container" style="position: absolute; top: 340px; left: 70px; width: 860px; height: 280px;">
         <!-- Dynamic tasks will be rendered here -->
-    </g>
+    </div>
 
-    <!-- Action Buttons -->
-    <rect x="50" y="630" width="120" height="35" class="btn" onclick="clearCompleted()"/>
-    <text x="110" y="652" class="btn-text">Clear Done</text>
+    <!-- Action Buttons (Modern HTML Buttons) -->
+    <foreignObject width="120" height="35" x="50" y="630">
+        <xhtml:button onclick="clearCompleted()"
+                      style="width:100%;height:100%;padding:6px;border-radius:6px;border:2px solid #4caf50;font-size:12px;background:rgba(76,175,80,0.8);color:#ffffff;cursor:pointer;">
+            Clear Done
+        </xhtml:button>
+    </foreignObject>
 
-    <rect x="180" y="630" width="120" height="35" class="btn" onclick="exportTasks()"/>
-    <text x="240" y="652" class="btn-text">Export JSON</text>
-
-    <rect x="310" y="630" width="120" height="35" class="btn" onclick="syncWithBackend()"/>
-    <text x="370" y="652" class="btn-text">Sync Backend</text>
+    <foreignObject width="120" height="35" x="180" y="630">
+        <xhtml:button onclick="exportTasks()"
+                      style="width:100%;height:100%;padding:6px;border-radius:6px;border:2px solid #4caf50;font-size:12px;background:rgba(76,175,80,0.8);color:#ffffff;cursor:pointer;">
+            Export JSON
+        </xhtml:button>
+    </foreignObject>
 
     <script><![CDATA[
     // Todo Manager PWA JavaScript Implementation
