@@ -1,3 +1,25 @@
+.idea
+.idea/*
+.vscode
+.vscode/*
+.env
+venv
+venv/*
+node_modules
+node_modules/*
+dist
+dist/*
+build
+build/*
+target
+target/*
+target/classes
+target/classes/*
+target/test-classes
+target/test-classes/*
+target/test-classes/*
+target/test-classes/*
+target/test-classes/*
 # Logs
 logs
 *.log

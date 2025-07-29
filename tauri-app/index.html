@@ -4,40 +4,99 @@
     <meta charset="UTF-8" />
     <link rel="stylesheet" href="/src/styles.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Tauri App</title>
+    <title>Tauri PDF Processor</title>
     <script type="module" src="/src/main.ts" defer></script>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        width: 100vw;
+        height: 100vh;
+        overflow: hidden;
+        background: #f8f9fa;
+      }
+      
+      #svg-container {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+      }
+      
+      #pdf-processor {
+        width: 100%;
+        height: 100%;
+        border: none;
+      }
+      
+      .error-message {
+        text-align: center;
+        padding: 20px;
+        background: #fff3cd;
+        border: 1px solid #ffeaa7;
+        border-radius: 5px;
+        margin: 20px;
+        max-width: 600px;
+      }
+      
+      .error-message h3 {
+        color: #856404;
+        margin-top: 0;
+      }
+      
+      .error-message p {
+        color: #856404;
+        margin: 10px 0;
+      }
+      
+      .error-message code {
+        background: #f8f9fa;
+        padding: 2px 4px;
+        border-radius: 3px;
+        font-family: monospace;
+      }
+    </style>
   </head>
 
   <body>
-    <main class="container">
-      <h1>Welcome to Tauri</h1>
+    <div id="svg-container">
+      <object id="pdf-processor" data="http://localhost:8088/pdf.php.svg" type="image/svg+xml">
+        <div class="error-message">
+          <h3>🚀 PHP Server Required</h3>
+          <p>To run the PDF processor application, you need to start the PHP server first.</p>
+          <p><strong>Step 1:</strong> Open a new terminal and run:</p>
+          <p><code>cd /home/tom/github/veridock/tauri/tauri-app</code></p>
+          <p><code>./start-php-server.sh</code></p>
+          <p><strong>Step 2:</strong> Refresh this app (Ctrl+R) after the PHP server starts</p>
+          <p>The PHP server will run your SVG application with embedded PHP code at <br><strong>http://localhost:8088/pdf.php.svg</strong></p>
+        </div>
+      </object>
+    </div>
 
-      <div class="row">
-        <a href="https://vitejs.dev" target="_blank">
-          <img src="/src/assets/vite.svg" class="logo vite" alt="Vite logo" />
-        </a>
-        <a href="https://tauri.app" target="_blank">
-          <img
-            src="/src/assets/tauri.svg"
-            class="logo tauri"
-            alt="Tauri logo"
-          />
-        </a>
-        <a href="https://www.typescriptlang.org/docs" target="_blank">
-          <img
-            src="/src/assets/typescript.svg"
-            class="logo typescript"
-            alt="typescript logo"
-          />
-        </a>
-      </div>
-      <p>Click on the Tauri logo to learn more about the framework</p>
+    <script>
+      // Check if PHP server is running and show appropriate message
+      function checkServerAndReload() {
+        fetch('http://localhost:8088/pdf.php.svg')
+          .then(response => {
+            if (response.ok) {
+              // Server is running, reload the object
+              const processor = document.getElementById('pdf-processor');
+              processor.data = 'http://localhost:8088/pdf.php.svg?' + Date.now();
+            }
+          })
+          .catch(error => {
+            // Server not running, show instructions
+            console.log('PHP server not yet available:', error);
+          });
+      }
 
-      <form class="row" id="greet-form">
-        <input id="greet-input" placeholder="Enter a name..." />
-        <button type="submit">Greet</button>
-      </form>
-      <p id="greet-msg"></p>
-    </main>
+      // Check server status every 3 seconds
+      setInterval(checkServerAndReload, 3000);
+      
+      // Initial check
+      setTimeout(checkServerAndReload, 1000);
+    </script>
   </body>
 </html>
