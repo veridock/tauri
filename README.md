@@ -1,176 +1,177 @@
-# Tauri PDF Processor App
+# 🚀 Tauri SVG Processor
 
-A powerful desktop application built with Tauri that processes PDF files and runs SVG-based applications with embedded PHP and JavaScript code.
+**Ultra-simple Tauri desktop application with PHP backend integration**
 
-## 🚀 What This App Does
+A minimal, elegant solution for running SVG files with embedded PHP code in a cross-platform desktop app.
 
-This Tauri application provides:
+## ✨ What This App Does
 
-### 📄 PDF Processing Features
-- **File Upload**: Upload PDF files through an intuitive interface
-- **Format Conversion**: Convert PDFs to PNG, JPG, or SVG formats
-- **DPI Control**: Customize output resolution (72-600 DPI)
-- **PDF Analysis**: Analyze PDF structure and properties
-- **File Download**: Download processed files directly
+- **Loads dynamic SVG files** with embedded PHP code (`todo.php.svg`)
+- **Processes PHP code** server-side for rich, interactive SVG applications  
+- **Runs in Tauri** for native desktop performance
+- **Ultra-simple configuration** - one `.env` file, multiple technologies
 
-### 🎨 SVG + PHP Integration
-The app runs **SVG files with embedded PHP code** from `pdf.php.svg`, featuring:
-- **Interactive SVG Interface**: Native SVG-based UI with embedded JavaScript
-- **Server-side PHP Processing**: Backend PHP code execution for file processing
-- **Real-time Status Updates**: Live feedback during file operations
-- **Sample File Management**: Built-in sample files for testing
+## 🛠️ Architecture
 
-## ⚙️ Port Configuration
-
-The application supports flexible port configuration through environment variables and the `.env` file.
-
-### Default Ports
-
-- **Vite Dev Server**: `1420`
-- **PHP Server**: `8088`
-
-### Configuration Methods
-
-#### Method 1: Using .env File (Recommended)
-
-Create or edit the `.env` file in the project root:
-
-```bash
-# Vite Development Server Port
-VITE_PORT=1420
-
-# PHP Server Port
-PHP_SERVER_PORT=8088
-
-# PHP Server Port for frontend access (must be prefixed with VITE_)
-VITE_PHP_SERVER_PORT=8088
-
-# Enable verbose logging
-ENABLE_VERBOSE_LOGGING=false
+```
+┌─────────────┐    HTTP    ┌─────────────┐    Loads    ┌─────────────┐
+│   Tauri     │ ---------> │ PHP Server  │ ---------> │todo.php.svg │
+│  Desktop    │            │ localhost   │            │(PHP + SVG)  │
+│    App      │            │   :8088     │            │             │
+└─────────────┘            └─────────────┘            └─────────────┘
 ```
 
-#### Method 2: Environment Variables at Runtime
+## 🚀 Quick Start
 
-Set environment variables before starting the application:
+### 1. Install System Dependencies
 
+**Ubuntu/Debian:**
 ```bash
-# Set custom ports
-export VITE_PORT=3000
-export PHP_SERVER_PORT=9000
-export VITE_PHP_SERVER_PORT=9000
-
-# Start the application
-./start-verbose.sh
+sudo apt update
+sudo apt install libwebkit2gtk-4.1-dev libjavascriptcoregtk-4.1-dev libsoup-3.0-dev php-cli
 ```
 
-#### Method 3: Inline Environment Variables
+**Other distros:** See [Tauri prerequisites](https://tauri.app/v1/guides/getting-started/prerequisites)
 
-Pass variables directly when running commands:
-
-```bash
-# Start with custom ports
-VITE_PORT=3000 PHP_SERVER_PORT=9000 VITE_PHP_SERVER_PORT=9000 ./start-verbose.sh
-
-# Or start individual components
-PHP_SERVER_PORT=9000 ./start-php-server.sh
-VITE_PORT=3000 npm run dev
-```
-
-### Port Configuration Files
-
-The following files automatically load and use port configuration:
-
-- **`.env`** - Main configuration file
-- **`vite.config.ts`** - Vite development server configuration
-- **`src-tauri/tauri.conf.json`** - Tauri app configuration (devUrl)
-- **`package.json`** - NPM script configurations
-- **`start-verbose.sh`** - Enhanced startup script
-- **`start.sh`** - Simple startup script
-- **`start-php-server.sh`** - PHP server startup script
-- **`start-php-server-verbose.sh`** - Enhanced PHP server script
-- **`todo.php.svg`** - Frontend PHP server port configuration
-
-### Troubleshooting Port Conflicts
-
-If you encounter "Port already in use" errors:
-
-```bash
-# Check what's using a port
-lsof -i :8088
-# or
-lsof -i :1420
-
-# Kill process using the port
-kill <PID>
-
-# Or use different ports
-VITE_PORT=3000 PHP_SERVER_PORT=9000 ./start-verbose.sh
-```
-
-## 📁 Key Files
-
-- **`pdf.php.svg`** - Main SVG application with embedded PHP/JavaScript
-- **`php/index.php`** - Additional PHP backend scripts
-- **`src-tauri/`** - Rust backend for Tauri desktop app
-- **`scripts/`** - Installation scripts for different Linux distributions
-- **`.env`** - Environment configuration file for ports and settings
-
-## 🛠 Installation
-
-### Step 1: Install System Dependencies
-
-Run the appropriate script for your Linux distribution:
-
-```bash
-# Auto-detect and install (recommended)
-./scripts/install-deps.sh
-
-# Or run specific distribution script:
-./scripts/install-deps-ubuntu.sh    # Ubuntu/Debian
-./scripts/install-deps-fedora.sh    # Fedora/CentOS/RHEL  
-./scripts/install-deps-arch.sh      # Arch Linux
-./scripts/install-deps-opensuse.sh  # openSUSE
-```
-
-### Step 2: Install Node Dependencies
-
+### 2. Install Node Dependencies
 ```bash
 npm install
 ```
 
-### Step 3: Run the Application
+### 3. Configure Environment
+Edit `.env` to set your preferences:
+```env
+PHP_SERVER_PORT=8088
+VITE_FILE_PHP=todo.php.svg
+```
 
+### 4. Generate Cross-Language Config
+```bash
+node env.js
+```
+This generates `env.php` and `env.sh` from your `.env` file.
+
+### 5. Start PHP Server
+```bash
+./start-php-server.sh
+```
+
+### 6. Run Tauri App
 ```bash
 npm run tauri dev
 ```
 
-## 🎯 How It Works
+## 🔧 Ultra-Simple Configuration System
 
-1. **Launch**: The Tauri app opens displaying the SVG-based interface
-2. **Upload**: Select a PDF file using the file picker
-3. **Process**: Choose conversion format (PNG/JPG/SVG) or analyze the PDF
-4. **Download**: Download the processed results
-5. **PHP Integration**: Backend PHP scripts handle the actual file processing
+This project uses a **unified, minimal approach** to share environment variables across all technologies:
 
-## 📋 System Requirements
-
-- **Linux** (Ubuntu/Debian, Fedora/CentOS/RHEL, Arch Linux, openSUSE)
-- **Node.js** and **npm**
-- **Rust** (installed automatically by Tauri)
-- **System libraries**: webkit2gtk-4.1, javascriptcoregtk-4.1, libsoup-3.0
-
-## 🔧 Development
-
-### Building for Production
-```bash
-npm run tauri build
+### Single Source of Truth: `.env`
+```env
+PHP_SERVER_PORT=8088
+VITE_FILE_PHP=todo.php.svg
+ENABLE_VERBOSE_LOGGING=false
 ```
 
-### Development Mode
-```bash
-npm run tauri dev
+### Automatic Generation
+Run `node env.js` to generate:
+- **`env.php`** - PHP defines for backend
+- **`env.sh`** - Shell exports for scripts
+- **JavaScript** - Direct loading via `loadEnv()`
+
+### Usage in Each Language
+
+**JavaScript:**
+```javascript
+import { loadEnv } from './env.js';
+const env = loadEnv();
+console.log(env.VITE_FILE_PHP); // "todo.php.svg"
 ```
 
-## Recommended IDE Setup
+**PHP:**
+```php
+require_once 'env.php';
+echo VITE_FILE_PHP; // "todo.php.svg"
+```
 
-- [VS Code](https://code.visualstudio.com/) + [Tauri](https://marketplace.visualstudio.com/items?itemName=tauri-apps.tauri-vscode) + [rust-analyzer](https://marketplace.visualstudio.com/items?itemName=rust-lang.rust-analyzer)
+**Shell:**
+```bash
+source env.sh
+echo $VITE_FILE_PHP # "todo.php.svg"
+```
+
+## 🧪 Testing
+
+Run cross-language environment tests:
+```bash
+node test-env-system.js
+```
+
+This verifies that all technologies (JS, PHP, Shell, SVG) can access the same configuration.
+
+## 📁 Project Structure
+
+```
+tauri/
+├── .env                    # Single source of truth for config
+├── env.js                  # Ultra-simple config loader
+├── env.php                 # Auto-generated PHP config
+├── env.sh                  # Auto-generated shell config
+├── index.html              # Minimal frontend (5KB)
+├── todo.php.svg            # SVG with embedded PHP
+├── start-php-server.sh     # Simple PHP server launcher
+├── test-env-system.js      # Cross-language tests
+└── src-tauri/              # Tauri backend
+```
+
+## 🎯 Key Features
+
+### ✅ Drastically Simplified
+- **One config system** instead of multiple generators
+- **Minimal files** - removed duplicates and complexity
+- **Single SVG** file instead of multiple copies
+- **Ultra-simple frontend** (5KB vs 42KB documentation)
+
+### ✅ Cross-Language Compatibility
+- **JavaScript, PHP, Shell** all use same variables
+- **Automatic synchronization** from `.env`
+- **No manual configuration** needed
+
+### ✅ Zero Dependencies
+- **No complex generators** or build systems
+- **Direct file reading** and simple generation
+- **Minimal overhead** and maximum reliability
+
+## 🔄 Development Workflow
+
+1. **Edit `.env`** to change configuration
+2. **Run `node env.js`** to update generated files
+3. **Restart services** to pick up changes
+4. **Test with `node test-env-system.js`**
+
+## 🐛 Troubleshooting
+
+**PHP server not starting?**
+```bash
+# Check if port is free
+lsof -i:8088
+
+# Restart PHP server
+./start-php-server.sh
+```
+
+**SVG not loading?**
+- Ensure PHP server is running on correct port
+- Check `.env` and regenerate configs with `node env.js`
+- Verify `todo.php.svg` exists and is readable
+
+**Configuration not synced?**
+- Run `node env.js` after changing `.env`
+- Restart all services (PHP server + Tauri app)
+
+## 📝 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+---
+
+*Built with ❤️ using Tauri, PHP, and ultra-simple configuration management*
