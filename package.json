@@ -1,0 +1,30 @@
+{
+  "name": "tauri-app",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "dev-verbose": "vite --logLevel info --clearScreen false 2>&1 | tee logs/vite_$(date +%Y%m%d_%H%M%S).log",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "tauri": "tauri",
+    "tauri-verbose": "tauri dev --verbose 2>&1 | tee logs/tauri_$(date +%Y%m%d_%H%M%S).log",
+    "php-server": "php -S localhost:8080",
+    "php-server-verbose": "./start-php-server-verbose.sh",
+    "dev-with-php": "concurrently \"npm run dev\" \"npm run php-server\" --names \"VITE,PHP\" --prefix-colors \"cyan,yellow\"",
+    "dev-with-php-verbose": "concurrently \"npm run dev-verbose\" \"npm run php-server-verbose\" --names \"VITE,PHP\" --prefix-colors \"cyan,yellow\"",
+    "tauri-with-php": "concurrently \"npm run tauri dev\" \"npm run php-server\" --names \"TAURI,PHP\" --prefix-colors \"green,yellow\"",
+    "tauri-with-php-verbose": "concurrently \"npm run tauri-verbose\" \"npm run php-server-verbose\" --names \"TAURI,PHP\" --prefix-colors \"green,yellow\" --timestamp-format \"HH:mm:ss\""
+  },
+  "dependencies": {
+    "@tauri-apps/api": "^2",
+    "@tauri-apps/plugin-opener": "^2"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "^2",
+    "concurrently": "^9.2.0",
+    "typescript": "~5.6.2",
+    "vite": "^6.0.3"
+  }
+}

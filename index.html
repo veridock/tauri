@@ -1,863 +1,102 @@
-<!DOCTYPE html>
-<html lang="pl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Alternatywy dla uruchamiania kodu w SVG</title>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="/src/styles.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tauri PDF Processor</title>
+    <script type="module" src="/src/main.ts" defer></script>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: #f5f7fa;
-            color: #333;
-            line-height: 1.6;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        h1 {
-            text-align: center;
-            color: #2c3e50;
-            margin-bottom: 10px;
-            font-size: 2.5em;
-        }
-
-        .subtitle {
-            text-align: center;
-            color: #7f8c8d;
-            margin-bottom: 40px;
-            font-size: 1.2em;
-        }
-
-        .solutions-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 25px;
-            margin-bottom: 40px;
-        }
-
-        .solution-card {
-            background: white;
-            border-radius: 12px;
-            padding: 25px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .solution-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-        }
-
-        .solution-header {
-            display: flex;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-
-        .solution-icon {
-            font-size: 2.5em;
-            margin-right: 15px;
-        }
-
-        .solution-title {
-            font-size: 1.5em;
-            color: #2c3e50;
-            font-weight: bold;
-        }
-
-        .solution-tech {
-            color: #e74c3c;
-            font-size: 0.9em;
-            font-weight: normal;
-            display: block;
-        }
-
-        .solution-description {
-            color: #555;
-            margin-bottom: 20px;
-        }
-
-        .pros-cons {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-
-        .pros, .cons {
-            padding: 15px;
-            border-radius: 8px;
-            font-size: 0.9em;
-        }
-
-        .pros {
-            background: #d4edda;
-            border: 1px solid #c3e6cb;
-        }
-
-        .cons {
-            background: #f8d7da;
-            border: 1px solid #f5c6cb;
-        }
-
-        .pros h4, .cons h4 {
-            margin-bottom: 8px;
-            font-size: 1em;
-        }
-
-        .pros h4 {
-            color: #155724;
-        }
-
-        .cons h4 {
-            color: #721c24;
-        }
-
-        .pros ul, .cons ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        .pros li:before {
-            content: "✓ ";
-            color: #28a745;
-            font-weight: bold;
-        }
-
-        .cons li:before {
-            content: "✗ ";
-            color: #dc3545;
-            font-weight: bold;
-        }
-
-        .code-example {
-            background: #2d2d2d;
-            color: #f8f8f2;
-            padding: 15px;
-            border-radius: 8px;
-            overflow-x: auto;
-            font-family: 'Courier New', monospace;
-            font-size: 0.9em;
-            margin-bottom: 15px;
-        }
-
-        .compatibility {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            margin-bottom: 15px;
-        }
-
-        .compat-badge {
-            padding: 5px 10px;
-            border-radius: 20px;
-            font-size: 0.85em;
-            background: #e9ecef;
-            color: #495057;
-        }
-
-        .compat-badge.good {
-            background: #28a745;
-            color: white;
-        }
-
-        .compat-badge.partial {
-            background: #ffc107;
-            color: #333;
-        }
-
-        .compat-badge.poor {
-            background: #dc3545;
-            color: white;
-        }
-
-        .comparison-table {
-            background: white;
-            border-radius: 12px;
-            padding: 25px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            overflow-x: auto;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        th, td {
-            padding: 12px;
-            text-align: left;
-            border-bottom: 1px solid #dee2e6;
-        }
-
-        th {
-            background: #f8f9fa;
-            font-weight: bold;
-            color: #495057;
-        }
-
-        .rating {
-            color: #ffc107;
-        }
-
-        .implementation-example {
-            background: white;
-            border-radius: 12px;
-            padding: 25px;
-            margin-top: 30px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        .tabs {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-            border-bottom: 2px solid #dee2e6;
-        }
-
-        .tab {
-            padding: 10px 20px;
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-size: 1em;
-            color: #6c757d;
-            transition: all 0.3s ease;
-        }
-
-        .tab.active {
-            color: #007bff;
-            border-bottom: 3px solid #007bff;
-            margin-bottom: -2px;
-        }
-
-        .tab-content {
-            display: none;
-        }
-
-        .tab-content.active {
-            display: block;
-            animation: fadeIn 0.3s;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        .best-for {
-            background: #e7f3ff;
-            border: 1px solid #b8daff;
-            padding: 15px;
-            border-radius: 8px;
-            margin-top: 15px;
-        }
-
-        .best-for h4 {
-            color: #004085;
-            margin-bottom: 8px;
-        }
-
-        .recommendation {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 30px;
-            border-radius: 12px;
-            margin-top: 40px;
-            text-align: center;
-        }
-
-        .recommendation h2 {
-            font-size: 2em;
-            margin-bottom: 15px;
-        }
-
-        .recommendation p {
-            font-size: 1.1em;
-            margin-bottom: 20px;
-        }
-
-        .recommendation-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-top: 30px;
-        }
-
-        .rec-item {
-            background: rgba(255, 255, 255, 0.2);
-            padding: 20px;
-            border-radius: 8px;
-            backdrop-filter: blur(10px);
-        }
-
-        .rec-item h3 {
-            font-size: 1.3em;
-            margin-bottom: 10px;
-        }
+      body {
+        margin: 0;
+        padding: 0;
+        width: 100vw;
+        height: 100vh;
+        overflow: hidden;
+        background: #f8f9fa;
+      }
+      
+      #svg-container {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+      }
+      
+      #pdf-processor {
+        width: 100%;
+        height: 100%;
+        border: none;
+      }
+      
+      .error-message {
+        text-align: center;
+        padding: 20px;
+        background: #fff3cd;
+        border: 1px solid #ffeaa7;
+        border-radius: 5px;
+        margin: 20px;
+        max-width: 600px;
+      }
+      
+      .error-message h3 {
+        color: #856404;
+        margin-top: 0;
+      }
+      
+      .error-message p {
+        color: #856404;
+        margin: 10px 0;
+      }
+      
+      .error-message code {
+        background: #f8f9fa;
+        padding: 2px 4px;
+        border-radius: 3px;
+        font-family: monospace;
+      }
     </style>
-</head>
-<body>
-    <div class="container">
-        <h1>🚀 Alternatywy dla uruchamiania kodu w SVG</h1>
-        <p class="subtitle">Różne podejścia do wykonywania dynamicznego kodu w plikach SVG</p>
+  </head>
 
-        <div class="solutions-grid">
-            <!-- 1. JavaScript w SVG -->
-            <div class="solution-card">
-                <div class="solution-header">
-                    <span class="solution-icon">🌐</span>
-                    <div>
-                        <h3 class="solution-title">JavaScript w SVG
-                            <span class="solution-tech">Pure Web</span>
-                        </h3>
-                    </div>
-                </div>
-
-                <p class="solution-description">
-                    SVG z wbudowanym JavaScript uruchamiane bezpośrednio w przeglądarce.
-                    Najprostsza metoda, ale z ograniczeniami bezpieczeństwa.
-                </p>
-
-                <div class="code-example">
-&lt;svg xmlns="http://www.w3.org/2000/svg"&gt;
-  &lt;script&gt;&lt;![CDATA[
-    // JavaScript code
-    document.getElementById('btn')
-      .addEventListener('click', () =&gt; {
-        alert('Hello from SVG!');
-      });
-  ]]&gt;&lt;/script&gt;
-&lt;/svg&gt;</div>
-
-                <div class="compatibility">
-                    <span class="compat-badge good">Chrome</span>
-                    <span class="compat-badge good">Firefox</span>
-                    <span class="compat-badge partial">Safari</span>
-                    <span class="compat-badge poor">File://</span>
-                </div>
-
-                <div class="pros-cons">
-                    <div class="pros">
-                        <h4>Zalety</h4>
-                        <ul>
-                            <li>Brak instalacji</li>
-                            <li>Natywne wsparcie</li>
-                            <li>Szybkie prototypowanie</li>
-                        </ul>
-                    </div>
-                    <div class="cons">
-                        <h4>Wady</h4>
-                        <ul>
-                            <li>Tylko frontend</li>
-                            <li>CORS restrictions</li>
-                            <li>Brak dostępu do plików</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="best-for">
-                    <h4>Najlepsze dla:</h4>
-                    <p>Proste interaktywne diagramy, wizualizacje, gry przeglądarowe</p>
-                </div>
-            </div>
-
-            <!-- 2. WebAssembly w SVG -->
-            <div class="solution-card">
-                <div class="solution-header">
-                    <span class="solution-icon">⚡</span>
-                    <div>
-                        <h3 class="solution-title">WebAssembly w SVG
-                            <span class="solution-tech">WASM + JS</span>
-                        </h3>
-                    </div>
-                </div>
-
-                <p class="solution-description">
-                    Kompiluj kod C++, Rust lub Go do WebAssembly i uruchamiaj w SVG.
-                    Wydajność bliska natywnej w przeglądarce.
-                </p>
-
-                <div class="code-example">
-&lt;svg xmlns="http://www.w3.org/2000/svg"&gt;
-  &lt;script&gt;&lt;![CDATA[
-    WebAssembly.instantiateStreaming(
-      fetch('app.wasm')
-    ).then(result =&gt; {
-      result.instance.exports.main();
-    });
-  ]]&gt;&lt;/script&gt;
-&lt;/svg&gt;</div>
-
-                <div class="compatibility">
-                    <span class="compat-badge good">Modern Browsers</span>
-                    <span class="compat-badge partial">Mobile</span>
-                    <span class="compat-badge poor">IE</span>
-                </div>
-
-                <div class="pros-cons">
-                    <div class="pros">
-                        <h4>Zalety</h4>
-                        <ul>
-                            <li>Wysoka wydajność</li>
-                            <li>Wiele języków</li>
-                            <li>Bezpieczne</li>
-                        </ul>
-                    </div>
-                    <div class="cons">
-                        <h4>Wady</h4>
-                        <ul>
-                            <li>Wymaga kompilacji</li>
-                            <li>Większy rozmiar</li>
-                            <li>Złożone debugowanie</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="best-for">
-                    <h4>Najlepsze dla:</h4>
-                    <p>Aplikacje wymagające wysokiej wydajności, porty desktopowych aplikacji</p>
-                </div>
-            </div>
-
-            <!-- 3. Python + PyWebView -->
-            <div class="solution-card">
-                <div class="solution-header">
-                    <span class="solution-icon">🐍</span>
-                    <div>
-                        <h3 class="solution-title">Python + PyWebView
-                            <span class="solution-tech">Python Native</span>
-                        </h3>
-                    </div>
-                </div>
-
-                <p class="solution-description">
-                    Użyj Pythona jako backend z PyWebView do renderowania SVG.
-                    Pełny dostęp do systemu i bibliotek Python.
-                </p>
-
-                <div class="code-example">
-import webview
-
-class Api:
-    def process_svg(self, data):
-        # Python logic here
-        return modified_data
-
-webview.create_window(
-    'SVG App',
-    'file://app.svg',
-    js_api=Api()
-)</div>
-
-                <div class="compatibility">
-                    <span class="compat-badge good">Windows</span>
-                    <span class="compat-badge good">macOS</span>
-                    <span class="compat-badge good">Linux</span>
-                </div>
-
-                <div class="pros-cons">
-                    <div class="pros">
-                        <h4>Zalety</h4>
-                        <ul>
-                            <li>Pełny Python</li>
-                            <li>Biblioteki ML/Data</li>
-                            <li>Cross-platform</li>
-                        </ul>
-                    </div>
-                    <div class="cons">
-                        <h4>Wady</h4>
-                        <ul>
-                            <li>Wymaga Python</li>
-                            <li>Większy rozmiar</li>
-                            <li>Wolniejszy start</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="best-for">
-                    <h4>Najlepsze dla:</h4>
-                    <p>Aplikacje data science, narzędzia analityczne, prototypy</p>
-                </div>
-            </div>
-
-            <!-- 4. Tauri (Rust) -->
-            <div class="solution-card">
-                <div class="solution-header">
-                    <span class="solution-icon">🦀</span>
-                    <div>
-                        <h3 class="solution-title">Tauri Framework
-                            <span class="solution-tech">Rust + WebView</span>
-                        </h3>
-                    </div>
-                </div>
-
-                <p class="solution-description">
-                    Lekka alternatywa dla Electron używająca Rust.
-                    Małe binaria, wysokie bezpieczeństwo, natywna wydajność.
-                </p>
-
-                <div class="code-example">
-// Rust backend
-#[tauri::command]
-fn process_svg(content: String) -&gt; String {
-    // Process SVG with Rust
-    format!("Processed: {}", content)
-}
-
-// Frontend can call Rust functions
-await invoke('process_svg', { content });</div>
-
-                <div class="compatibility">
-                    <span class="compat-badge good">All Desktop</span>
-                    <span class="compat-badge good">Small Size</span>
-                    <span class="compat-badge partial">Mobile Soon</span>
-                </div>
-
-                <div class="pros-cons">
-                    <div class="pros">
-                        <h4>Zalety</h4>
-                        <ul>
-                            <li>Małe binaria (~10MB)</li>
-                            <li>Bezpieczne</li>
-                            <li>Natywna wydajność</li>
-                        </ul>
-                    </div>
-                    <div class="cons">
-                        <h4>Wady</h4>
-                        <ul>
-                            <li>Wymaga Rust</li>
-                            <li>Mniejsza społeczność</li>
-                            <li>Krzywa uczenia</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="best-for">
-                    <h4>Najlepsze dla:</h4>
-                    <p>Produkcyjne aplikacje desktop, gdzie liczy się rozmiar i bezpieczeństwo</p>
-                </div>
-            </div>
-
-            <!-- 5. Deno + WebView -->
-            <div class="solution-card">
-                <div class="solution-header">
-                    <span class="solution-icon">🦕</span>
-                    <div>
-                        <h3 class="solution-title">Deno + Webview
-                            <span class="solution-tech">TypeScript Runtime</span>
-                        </h3>
-                    </div>
-                </div>
-
-                <p class="solution-description">
-                    Nowoczesne środowisko TypeScript/JavaScript z wbudowanym bezpieczeństwem.
-                    Natywne moduły, bez node_modules.
-                </p>
-
-                <div class="code-example">
-// app.ts
-import { Webview } from "https://deno.land/x/webview";
-
-const html = await Deno.readTextFile("app.svg");
-const webview = new Webview();
-
-webview.navigate(`data:image/svg+xml,${html}`);
-webview.run();</div>
-
-                <div class="compatibility">
-                    <span class="compat-badge good">TypeScript</span>
-                    <span class="compat-badge good">Secure</span>
-                    <span class="compat-badge partial">Young Ecosystem</span>
-                </div>
-
-                <div class="pros-cons">
-                    <div class="pros">
-                        <h4>Zalety</h4>
-                        <ul>
-                            <li>TypeScript natywnie</li>
-                            <li>Bezpieczne domyślnie</li>
-                            <li>Bez package.json</li>
-                        </ul>
-                    </div>
-                    <div class="cons">
-                        <h4>Wady</h4>
-                        <ul>
-                            <li>Młoda technologia</li>
-                            <li>Mniej bibliotek</li>
-                            <li>Compatibility issues</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="best-for">
-                    <h4>Najlepsze dla:</h4>
-                    <p>Nowoczesne aplikacje TypeScript, secure by default projekty</p>
-                </div>
-            </div>
-
-            <!-- 6. Qt + QML -->
-            <div class="solution-card">
-                <div class="solution-header">
-                    <span class="solution-icon">🎯</span>
-                    <div>
-                        <h3 class="solution-title">Qt + QML + SVG
-                            <span class="solution-tech">C++ Native</span>
-                        </h3>
-                    </div>
-                </div>
-
-                <p class="solution-description">
-                    Potężny framework C++ z deklaratywnym QML.
-                    Natywna wydajność, profesjonalne UI, pełna kontrola.
-                </p>
-
-                <div class="code-example">
-// QML with SVG
-import QtQuick 2.15
-import QtSvg 1.15
-
-ApplicationWindow {
-    SvgImage {
-        source: "app.svg"
-        MouseArea {
-            onClicked: backend.processSvg()
-        }
-    }
-}</div>
-
-                <div class="compatibility">
-                    <span class="compat-badge good">All Platforms</span>
-                    <span class="compat-badge good">Mobile</span>
-                    <span class="compat-badge good">Embedded</span>
-                </div>
-
-                <div class="pros-cons">
-                    <div class="pros">
-                        <h4>Zalety</h4>
-                        <ul>
-                            <li>Prawdziwie natywne</li>
-                            <li>Świetna wydajność</li>
-                            <li>Mobilne i embedded</li>
-                        </ul>
-                    </div>
-                    <div class="cons">
-                        <h4>Wady</h4>
-                        <ul>
-                            <li>Wymaga C++</li>
-                            <li>Duży rozmiar</li>
-                            <li>Licencja</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="best-for">
-                    <h4>Najlepsze dla:</h4>
-                    <p>Profesjonalne aplikacje, systemy embedded, aplikacje mobilne</p>
-                </div>
-            </div>
-
-            <!-- 7. Flutter Desktop -->
-            <div class="solution-card">
-                <div class="solution-header">
-                    <span class="solution-icon">🎨</span>
-                    <div>
-                        <h3 class="solution-title">Flutter Desktop
-                            <span class="solution-tech">Dart + Skia</span>
-                        </h3>
-                    </div>
-                </div>
-
-                <p class="solution-description">
-                    Framework Google do budowy natywnych aplikacji.
-                    Renderowanie przez Skia, hot reload, bogaty ekosystem.
-                </p>
-
-                <div class="code-example">
-import 'package:flutter_svg/flutter_svg.dart';
-
-class SvgApp extends StatelessWidget {
-  Widget build(BuildContext context) {
-    return SvgPicture.asset(
-      'assets/app.svg',
-      semanticsLabel: 'Interactive SVG'
-    );
-  }
-}</div>
-
-                <div class="compatibility">
-                    <span class="compat-badge good">Desktop</span>
-                    <span class="compat-badge good">Mobile</span>
-                    <span class="compat-badge partial">Web</span>
-                </div>
-
-                <div class="pros-cons">
-                    <div class="pros">
-                        <h4>Zalety</h4>
-                        <ul>
-                            <li>Hot reload</li>
-                            <li>Jeden kod wszędzie</li>
-                            <li>Piękne UI</li>
-                        </ul>
-                    </div>
-                    <div class="cons">
-                        <h4>Wady</h4>
-                        <ul>
-                            <li>Dart language</li>
-                            <li>Duży rozmiar app</li>
-                            <li>Desktop still beta</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="best-for">
-                    <h4>Najlepsze dla:</h4>
-                    <p>Aplikacje multi-platform, zespoły mobilne rozszerzające na desktop</p>
-                </div>
-            </div>
-
-            <!-- 8. Neutralino.js -->
-            <div class="solution-card">
-                <div class="solution-header">
-                    <span class="solution-icon">⚪</span>
-                    <div>
-                        <h3 class="solution-title">Neutralino.js
-                            <span class="solution-tech">Lightweight Native</span>
-                        </h3>
-                    </div>
-                </div>
-
-                <p class="solution-description">
-                    Ultra-lekka alternatywa dla Electron.
-                    Aplikacje &lt; 5MB, natywne API, WebView.
-                </p>
-
-                <div class="code-example">
-// JavaScript API
-Neutralino.filesystem.readFile('./app.svg')
-  .then(content =&gt; {
-    // Process SVG
-    document.body.innerHTML = content;
-  });
-
-// Native file access!
-Neutralino.os.execCommand('php process.php');</div>
-
-                <div class="compatibility">
-                    <span class="compat-badge good">Tiny Size</span>
-                    <span class="compat-badge good">Fast</span>
-                    <span class="compat-badge partial">Limited API</span>
-                </div>
-
-                <div class="pros-cons">
-                    <div class="pros">
-                        <h4>Zalety</h4>
-                        <ul>
-                            <li>Bardzo małe (~5MB)</li>
-                            <li>Szybki start</li>
-                            <li>Natywne API</li>
-                        </ul>
-                    </div>
-                    <div class="cons">
-                        <h4>Wady</h4>
-                        <ul>
-                            <li>Ograniczone API</li>
-                            <li>Mała społeczność</li>
-                            <li>Mniej stabilne</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="best-for">
-                    <h4>Najlepsze dla:</h4>
-                    <p>Lekkie narzędzia, gdzie rozmiar ma znaczenie</p>
-                </div>
-            </div>
+  <body>
+    <div id="svg-container">
+      <object id="pdf-processor" data="http://localhost:8088/pdf.php.svg" type="image/svg+xml">
+        <div class="error-message">
+          <h3>🚀 PHP Server Required</h3>
+          <p>To run the PDF processor application, you need to start the PHP server first.</p>
+          <p><strong>Step 1:</strong> Open a new terminal and run:</p>
+          <p><code>cd /home/tom/github/veridock/tauri/tauri-app</code></p>
+          <p><code>./start-php-server.sh</code></p>
+          <p><strong>Step 2:</strong> Refresh this app (Ctrl+R) after the PHP server starts</p>
+          <p>The PHP server will run your SVG application with embedded PHP code at <br><strong>http://localhost:8088/pdf.php.svg</strong></p>
         </div>
+      </object>
+    </div>
 
-        <!-- Comparison Table -->
-        <div class="comparison-table">
-            <h2>📊 Porównanie rozwiązań</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Rozwiązanie</th>
-                        <th>Rozmiar App</th>
-                        <th>Wydajność</th>
-                        <th>Łatwość</th>
-                        <th>Backend</th>
-                        <th>Ekosystem</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>JavaScript/SVG</strong></td>
-                        <td>0 MB</td>
-                        <td><span class="rating">⭐⭐⭐</span></td>
-                        <td><span class="rating">⭐⭐⭐⭐⭐</span></td>
-                        <td>❌ Brak</td>
-                        <td><span class="rating">⭐⭐⭐⭐⭐</span></td>
-                    </tr>
-                    <tr>
-                        <td><strong>Electron + PHP</strong></td>
-                        <td>~100 MB</td>
-                        <td><span class="rating">⭐⭐⭐</span></td>
-                        <td><span class="rating">⭐⭐⭐⭐</span></td>
-                        <td>✅ Pełny PHP</td>
-                        <td><span class="rating">⭐⭐⭐⭐⭐</span></td>
-                    </tr>
-                    <tr>
-                        <td><strong>Tauri</strong></td>
-                        <td>~10 MB</td>
-                        <td><span class="rating">⭐⭐⭐⭐⭐</span></td>
-                        <td><span class="rating">⭐⭐⭐</span></td>
-                        <td>✅ Rust</td>
-                        <td><span class="rating">⭐⭐⭐</span></td>
-                    </tr>
-                    <tr>
-                        <td><strong>Python + PyWebView</strong></td>
-                        <td>~50 MB</td>
-                        <td><span class="rating">⭐⭐⭐</span></td>
-                        <td><span class="rating">⭐⭐⭐⭐</span></td>
-                        <td>✅ Python</td>
-                        <td><span class="rating">⭐⭐⭐⭐</span></td>
-                    </tr>
-                    <tr>
-                        <td><strong>Qt + QML</strong></td>
-                        <td>~30 MB</td>
-                        <td><span class="rating">⭐⭐⭐⭐⭐</span></td>
-                        <td><span class="rating">⭐⭐</span></td>
-                        <td>✅ C++</td>
-                        <td><span class="rating">⭐⭐⭐⭐</span></td>
-                    </tr>
-                    <tr>
-                        <td><strong>Neutralino</strong></td>
-                        <td>~5 MB</td>
-                        <td><span class="rating">⭐⭐⭐⭐</span></td>
-                        <td><span class="rating">⭐⭐⭐⭐</span></td>
-                        <td>⚠️ Ograniczony</td>
-                        <td><span class="rating">⭐⭐</span></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+    <script>
+      // Check if PHP server is running and show appropriate message
+      function checkServerAndReload() {
+        fetch('http://localhost:8088/pdf.php.svg')
+          .then(response => {
+            if (response.ok) {
+              // Server is running, reload the object
+              const processor = document.getElementById('pdf-processor');
+              processor.data = 'http://localhost:8088/pdf.php.svg?' + Date.now();
+            }
+          })
+          .catch(error => {
+            // Server not running, show instructions
+            console.log('PHP server not yet available:', error);
+          });
+      }
 
-        <!-- Implementation Examples -->
-        <div class="implementation-example">
-            <h2>💻 Przykłady implementacji</h2>
-
-            <div class="tabs">
-                <button class="tab active" onclick="showTab('tauri')">Tauri</button>
-                <button class="tab" onclick="showTab('python')">Python</button>
-                <button class="tab" onclick="showTab('deno')">Deno</button>
-                <button class="tab" onclick="showTab('neutralino')">Neutralino</button>
+      // Check server status every 3 seconds
+      setInterval(checkServerAndReload, 3000);
+      
+      // Initial check
+      setTimeout(checkServerAndReload, 1000);
+    </script>
+  </body>
+</html>
