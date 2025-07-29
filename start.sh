@@ -110,7 +110,7 @@ echo "  📁 Document root: $(pwd)"
 echo "  🎯 SVG application: http://localhost:$PHP_SERVER_PORT/$VITE_FILE_PHP"
 
 # Start PHP server in background with output redirection
-nohup php -S localhost:$PHP_SERVER_PORT > php_server.log 2>&1 &
+nohup php -S localhost:$PHP_SERVER_PORT router.php > php_server.log 2>&1 &
 PHP_PID=$!
 
 # Wait a moment and check if PHP server started successfully

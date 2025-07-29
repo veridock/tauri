@@ -89,7 +89,7 @@
 
     <!-- Header Section -->
     <text x="50" y="50" class="header">📋
-        Todo Manager PWA - <?php echo date('H:i:s'); ?> Czas: <?php echo $current_time; ?> -
+        Todo Manager PWA - Czas: <?php echo $current_time; ?> -
         Zadań: <?php echo $tasks_count; ?>
     </text>
     <text x="50" y="75" class="subheader">Advanced Task Management with PHP Backend</text>

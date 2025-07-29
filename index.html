@@ -18,36 +18,51 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 20px;
+            padding: 10px;
         }
         
         .container {
             background: white;
-            border-radius: 20px;
+            border-radius: 8px;
             box-shadow: 0 20px 40px rgba(0,0,0,0.1);
             overflow: hidden;
             width: 100%;
-            max-width: 1200px;
-            min-height: 80vh;
+            max-width: 1000px;
+            height: 700px;
+            position: relative;
         }
         
-        .header {
-            background: #2c3e50;
-            color: white;
-            padding: 20px;
-            text-align: center;
+        .server-info {
+            background: #e3f2fd;
+            padding: 8px 15px;
+            border-left: 4px solid #2196f3;
+            font-size: 12px;
+            color: #1976d2;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 10;
+            transition: all 0.3s ease;
+        }
+        
+        .server-info.hidden {
+            transform: translateY(-100%);
+            opacity: 0;
         }
         
         .svg-container {
             width: 100%;
-            height: 70vh;
+            height: 100%;
             position: relative;
+            background: #f8f9fa;
         }
         
         .svg-object {
             width: 100%;
             height: 100%;
             border: none;
+            display: block;
         }
         
         .loading {
@@ -57,109 +72,125 @@
             transform: translate(-50%, -50%);
             text-align: center;
             color: #666;
+            z-index: 5;
         }
         
-        .status {
-            padding: 10px 20px;
-            background: #f8f9fa;
-            border-top: 1px solid #dee2e6;
-            font-size: 14px;
-            color: #666;
+        .loading.hidden {
+            display: none;
         }
         
-        .config-info {
-            background: #e3f2fd;
-            padding: 10px 20px;
-            border-left: 4px solid #2196f3;
-            margin: 10px 20px;
+        .status-error {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            right: 10px;
+            padding: 8px 12px;
+            background: #ffebee;
+            border: 1px solid #f44336;
+            color: #c62828;
             border-radius: 4px;
             font-size: 12px;
-            color: #1976d2;
+            z-index: 10;
+        }
+        
+        .status-error.hidden {
+            display: none;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="header">
-            <h1>🚀 Tauri SVG Processor</h1>
-            <p>Dynamic SVG processing with PHP backend</p>
-        </div>
-        
-        <div class="config-info" id="config-info">
-            Loading configuration...
+        <div class="server-info" id="server-info">
+            Server: localhost:<span id="server-port">8088</span> | File: <span id="svg-file">todo.php.svg</span>
         </div>
         
         <div class="svg-container">
             <div class="loading" id="loading">
-                <h3>⏳ Loading SVG Application...</h3>
+                <h3>Loading SVG Application...</h3>
                 <p>Connecting to PHP server...</p>
             </div>
+            
             <object class="svg-object" id="svg-processor" data="" type="image/svg+xml">
                 Your browser does not support SVG objects.
             </object>
         </div>
         
-        <div class="status" id="status">
-            Ready to load SVG processor
+        <div class="status-error hidden" id="status-error">
+            PHP server not running - Start with: ./start.sh
         </div>
     </div>
 
     <script>
         // ULTRA-SIMPLE CONFIG SYSTEM
-        // Direct .env variable access without complex generators
         const CONFIG = {
-            // Parse .env variables from backend or use defaults
             phpPort: '8088',
             svgFile: 'todo.php.svg',
-            
-            // Get config from URL params (for testing)
-            getFromUrl: function() {
-                const params = new URLSearchParams(window.location.search);
-                return {
-                    phpPort: params.get('port') || this.phpPort,
-                    svgFile: params.get('file') || this.svgFile
-                };
-            }
+            checkInterval: 2000
         };
+
+        // Get config from URL params (for testing)
+        function getFromUrl() {
+            const params = new URLSearchParams(window.location.search);
+            if (params.get('port')) CONFIG.phpPort = params.get('port');
+            if (params.get('file')) CONFIG.svgFile = params.get('file');
+        }
 
         // Initialize app with ultra-simple config
         function initApp() {
-            const config = CONFIG.getFromUrl();
-            const svgUrl = `http://localhost:${config.phpPort}/${config.svgFile}`;
+            // Update UI with config
+            document.getElementById('server-port').textContent = CONFIG.phpPort;
+            document.getElementById('svg-file').textContent = CONFIG.svgFile;
             
-            // Update UI
-            document.getElementById('config-info').innerHTML = `
-                📡 Server: localhost:${config.phpPort} | 📄 File: ${config.svgFile}
-            `;
-            
-            document.getElementById('status').textContent = `Connecting to ${svgUrl}`;
-            
-            // Load SVG
+            // Start checking for server and loading SVG
+            checkServerAndLoadSVG();
+        }
+
+        // Check if PHP server is running and load SVG
+        function checkServerAndLoadSVG() {
+            const phpUrl = `http://localhost:${CONFIG.phpPort}/${CONFIG.svgFile}`;
             const svgObject = document.getElementById('svg-processor');
-            svgObject.data = svgUrl;
-            
-            // Test connection
-            fetch(svgUrl)
+            const loading = document.getElementById('loading');
+            const serverInfo = document.getElementById('server-info');
+            const statusError = document.getElementById('status-error');
+
+            fetch(phpUrl)
                 .then(response => {
                     if (response.ok) {
-                        document.getElementById('loading').style.display = 'none';
-                        document.getElementById('status').innerHTML = `✅ Connected to PHP server`;
-                        // Refresh every 10 seconds
-                        setTimeout(() => {
-                            svgObject.data = svgUrl + '?t=' + Date.now();
-                        }, 10000);
+                        // Server is running, load the SVG
+                        svgObject.data = phpUrl + '?' + Date.now();
+                        
+                        // Wait for SVG to load, then hide info
+                        svgObject.onload = function() {
+                            setTimeout(() => {
+                                loading.classList.add('hidden');
+                                serverInfo.classList.add('hidden');
+                                statusError.classList.add('hidden');
+                            }, 500);
+                        };
+                        
+                        // Handle SVG load error
+                        svgObject.onerror = function() {
+                            loading.classList.add('hidden');
+                            statusError.classList.remove('hidden');
+                            statusError.textContent = 'Error loading SVG - Check PHP server logs';
+                        };
                     } else {
-                        throw new Error('Server not ready');
+                        throw new Error('Server responded with error');
                     }
                 })
                 .catch(error => {
-                    document.getElementById('status').innerHTML = `❌ PHP server not running - Start with: ./start.sh`;
-                    // Retry every 5 seconds
-                    setTimeout(initApp, 5000);
+                    // Server not running, show error and retry
+                    console.log('PHP server not available:', error);
+                    loading.innerHTML = '<h3>Waiting for PHP server...</h3><p>Start with: ./start.sh</p>';
+                    statusError.classList.remove('hidden');
+                    
+                    // Retry after interval
+                    setTimeout(checkServerAndLoadSVG, CONFIG.checkInterval);
                 });
         }
 
-        // Start app
+        // Initialize when page loads
+        getFromUrl();
         initApp();
     </script>
 </body>
