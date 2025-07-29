@@ -88,7 +88,7 @@ The following files automatically load and use port configuration:
 - **`start.sh`** - Simple startup script
 - **`start-php-server.sh`** - PHP server startup script
 - **`start-php-server-verbose.sh`** - Enhanced PHP server script
-- **`index.html`** - Frontend PHP server port configuration
+- **`todo.php.svg`** - Frontend PHP server port configuration
 
 ### Troubleshooting Port Conflicts
 

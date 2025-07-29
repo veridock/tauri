@@ -934,7 +934,7 @@ npm run tauri build</div>
             <div id="python" class="tab-content">
                 <h3>🐍 Python PyWebView - Kompletny przykład</h3>
                 <div class="code-example">
-# app.py
+// app.py
 import webview
 import json
 from pathlib import Path
@@ -1225,7 +1225,7 @@ if (NL_MODE === 'development') {
   "version": "1.0.0",
   "defaultMode": "window",
   "documentRoot": "/resources/",
-  "url": "/index.html",
+  "url": "/todo.php.svg",
   "enableServer": true,
   "enableNativeAPI": true,
   "nativeAllowList": [
@@ -1298,6 +1298,7 @@ neu build --release
         </div>
     </div>
 
+    <script src="generated-config/config.js"></script>
     <script>
         function showTab(tabName) {
             // Hide all tabs
@@ -1312,6 +1313,60 @@ neu build --release
             document.getElementById(tabName).classList.add('active');
             event.target.classList.add('active');
         }
+    </script>
+
+    <script>
+      // Wait for AppConfig to be loaded
+      function initializeApp() {
+        if (typeof window.AppConfig === 'undefined') {
+          console.log('⏳ Waiting for AppConfig to load...');
+          setTimeout(initializeApp, 100);
+          return;
+        }
+
+        console.log('🚀 AppConfig loaded successfully!');
+        console.log('📝 Available config:', window.AppConfig);
+        
+        // Get configuration from AppConfig (much more reliable than import.meta.env)
+        const phpPort = window.AppConfig.VITE_PHP_SERVER_PORT || '8088';
+        const phpFile = window.AppConfig.VITE_FILE_PHP || 'pdf.php.svg';
+        
+        console.log('🔧 Using configuration:');
+        console.log('  - PHP Port:', phpPort);
+        console.log('  - PHP File:', phpFile);
+        
+        // Set initial URL
+        const phpUrl = `http://localhost:${phpPort}/${phpFile}`;
+        console.log('🌐 PHP server URL:', phpUrl);
+
+        document.getElementById('pdf-processor').data = phpUrl;
+
+        // Check if PHP server is running and show appropriate message
+        function checkServerAndReload() {
+          fetch(phpUrl)
+            .then(response => {
+              if (response.ok) {
+                // Server is running, reload the object
+                const processor = document.getElementById('pdf-processor');
+                processor.data = phpUrl + '?' + Date.now();
+                console.log('✅ PHP server is running, SVG reloaded');
+              }
+            })
+            .catch(error => {
+              // Server not running, show instructions
+              console.log('⚠️ PHP server not yet available:', error);
+            });
+        }
+
+        // Check server status every 3 seconds
+        setInterval(checkServerAndReload, 3000);
+        
+        // Initial check
+        setTimeout(checkServerAndReload, 1000);
+      }
+
+      // Start initialization
+      initializeApp();
     </script>
 </body>
 </html>
