@@ -33,7 +33,7 @@ echo ""
 echo "🎯 Application URLs:"
 echo "   📡 Vite Dev Server: http://localhost:${VITE_PORT}"
 echo "   🐘 PHP Server: http://localhost:${PHP_SERVER_PORT}"
-echo "   📄 PDF Processor: http://localhost:${PHP_SERVER_PORT}/pdf.php.svg"
+echo "   📄 PDF Processor: ${PDF_PROCESSOR_URL}"
 echo ""
 echo "Press Ctrl+C to stop all servers"
 echo "=================================================================="
@@ -83,9 +83,13 @@ cleanup() {
     echo "[$(date '+%Y-%m-%d %H:%M:%S')] Application shutdown initiated" >> "$MAIN_LOG_FILE"
     
     # Kill any remaining processes
-    pkill -f "php -S localhost:8088" 2>/dev/null || true
+    pkill -f "php -S localhost:${PHP_SERVER_PORT}" 2>/dev/null || true
     pkill -f "vite" 2>/dev/null || true
     pkill -f "tauri dev" 2>/dev/null || true
+    
+    # Clean npm cache
+    echo "🧹 Cleaning npm cache..." | tee -a "$MAIN_LOG_FILE"
+    npm cache clean --force 2>&1 | tee -a "$MAIN_LOG_FILE"
     
     echo "[$(date '+%Y-%m-%d %H:%M:%S')] Cleanup completed" >> "$MAIN_LOG_FILE"
     echo "📋 All logs saved in: $LOG_DIR/" | tee -a "$MAIN_LOG_FILE"
@@ -94,6 +98,12 @@ cleanup() {
 
 # Set trap for cleanup
 trap cleanup SIGINT SIGTERM
+
+# Clean npm cache before starting (optional)
+if [[ "${CLEAN_NPM_ON_START:-false}" == "true" ]]; then
+    echo "🧹 Cleaning npm cache before start..." | tee -a "$MAIN_LOG_FILE"
+    npm cache clean --force 2>&1 | tee -a "$MAIN_LOG_FILE"
+fi
 
 # Log the start of services
 echo "[$(date '+%Y-%m-%d %H:%M:%S')] Starting Tauri app with PHP server (verbose mode)" >> "$MAIN_LOG_FILE"

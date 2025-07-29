@@ -25,7 +25,7 @@ fi
 # Start PHP server on configured port
 echo "📡 Starting PHP server on http://localhost:${PHP_SERVER_PORT}"
 echo "📁 Document root: $(pwd)"
-echo "🎯 Main application: http://localhost:${PHP_SERVER_PORT}/pdf.php.svg"
+echo "🎯 Main application: ${PDF_PROCESSOR_URL}"
 echo ""
 echo "Press Ctrl+C to stop the server"
 echo "----------------------------------------"

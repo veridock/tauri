@@ -22,7 +22,7 @@ mkdir -p "$LOG_DIR"
 echo "🚀 Starting Enhanced PHP Server with Verbose Logging..."
 echo "📁 Document root: $(pwd)"
 echo "📡 Server URL: http://localhost:${PHP_SERVER_PORT}"
-echo "🎯 PDF Processor: http://localhost:${PHP_SERVER_PORT}/pdf.php.svg"
+echo "🎯 PDF Processor: ${PDF_PROCESSOR_URL}"
 echo ""
 echo "📋 Log Files:"
 echo "   📝 Server Log: $PHP_LOG_FILE"
@@ -36,7 +36,7 @@ echo "=================================================="
 echo "[$(date '+%Y-%m-%d %H:%M:%S')] PHP Server Starting..." >> "$PHP_LOG_FILE"
 echo "[$(date '+%Y-%m-%d %H:%M:%S')] Document Root: $(pwd)" >> "$PHP_LOG_FILE"
 echo "[$(date '+%Y-%m-%d %H:%M:%S')] Server URL: http://localhost:${PHP_SERVER_PORT}" >> "$PHP_LOG_FILE"
-echo "[$(date '+%Y-%m-%d %H:%M:%S')] PDF Processor: http://localhost:${PHP_SERVER_PORT}/pdf.php.svg" >> "$PHP_LOG_FILE"
+echo "[$(date '+%Y-%m-%d %H:%M:%S')] PDF Processor: ${PDF_PROCESSOR_URL}" >> "$PHP_LOG_FILE"
 
 # Function to handle cleanup on exit
 cleanup() {
