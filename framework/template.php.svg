@@ -1,0 +1,367 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xhtml="http://www.w3.org/1999/xhtml" width="100%" height="100%"
+     viewBox="0 0 1000 700">
+  <!-- Framework CSS -->
+  <defs>
+    <style type="text/css">
+      <![CDATA[
+        /* Import Framework CSS - Paste from svg-php-framework.css here or link externally */
+        
+        /* Custom App Styles */
+        .app-header {
+          text-align: center;
+          padding: 20px;
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          border-radius: 12px;
+          margin-bottom: 20px;
+        }
+        
+        .app-title {
+          font-size: 24px;
+          font-weight: bold;
+          color: #ffffff;
+          margin-bottom: 5px;
+        }
+        
+        .app-subtitle {
+          font-size: 14px;
+          color: #cccccc;
+        }
+      ]]>
+    </style>
+  </defs>
+
+    <?php
+// SVG+PHP Framework Template
+// Copy this file and customize for your application
+// Version: 1.0.0
+
+// Initialize your data here
+$appTitle = "My SVG+PHP App";
+$appVersion = "1.0.0";
+$currentDate = date('Y-m-d H:i:s');
+
+// Your PHP logic here
+$sampleData = [
+    ['id' => 1, 'name' => 'Sample Item 1', 'status' => 'active'],
+    ['id' => 2, 'name' => 'Sample Item 2', 'status' => 'inactive'],
+];
+
+// Handle form submissions
+if ($_POST) {
+    // Handle your form data here
+    $action = $_POST['action'] ?? '';
+
+    switch ($action) {
+        case 'add_item':
+            // Add item logic
+            break;
+        case 'update_item':
+            // Update item logic
+            break;
+        case 'delete_item':
+            // Delete item logic
+            break;
+    }
+}
+?>
+  <!-- Background -->
+  <rect width="100%" height="100%" fill="url(#backgroundGradient)"/>
+  
+  <!-- Background Gradient -->
+  <defs>
+    <linearGradient id="backgroundGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#2c3e50;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#34495e;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <!-- App Header -->
+  <foreignObject x="50" y="20" width="900" height="80">
+    <xhtml:div class="app-header">
+      <xhtml:div class="app-title"><?php echo htmlspecialchars($appTitle); ?></xhtml:div>
+      <xhtml:div class="app-subtitle">Version <?php echo htmlspecialchars($appVersion); ?> | Generated on <?php echo $currentDate; ?></xhtml:div>
+    </xhtml:div>
+  </foreignObject>
+
+  <!-- Main Content Area -->
+  <foreignObject x="50" y="120" width="900" height="400">
+    <xhtml:div class="svg-content-container" id="main-content">
+      
+      <!-- Sample Form -->
+      <xhtml:div class="svg-card">
+        <xhtml:h3 style="color: #ffffff; margin-top: 0;">Add New Item</xhtml:h3>
+        
+        <xhtml:div class="svg-flex-row svg-flex-gap-normal" style="margin-bottom: 15px;">
+          <!-- Item Name Input -->
+          <xhtml:div style="flex: 1;">
+            <xhtml:input type="text" 
+                        id="item-name" 
+                        placeholder="Enter item name..." 
+                        class="svg-input"/>
+          </xhtml:div>
+          
+          <!-- Status Select -->
+          <xhtml:div style="width: 120px;">
+            <xhtml:select id="item-status" class="svg-select">
+              <xhtml:option value="active">Active</xhtml:option>
+              <xhtml:option value="inactive">Inactive</xhtml:option>
+              <xhtml:option value="pending">Pending</xhtml:option>
+            </xhtml:select>
+          </xhtml:div>
+          
+          <!-- Add Button -->
+          <xhtml:div style="width: 100px;">
+            <xhtml:button class="svg-btn-primary" 
+                         onclick="addNewItem()" 
+                         data-svg-click="addNewItem">
+              Add Item
+            </xhtml:button>
+          </xhtml:div>
+        </xhtml:div>
+      </xhtml:div>
+
+      <!-- Items Display Area -->
+      <xhtml:div class="svg-card">
+        <xhtml:h3 style="color: #ffffff; margin-top: 0;">Items List</xhtml:h3>
+        <xhtml:div id="items-container" class="svg-content-container" style="height: 200px;">
+          
+          <!-- PHP Generated Initial Items -->
+          <?php foreach ($sampleData as $item): ?>
+          <xhtml:div class="svg-task-item">
+            <xhtml:div class="svg-task-content">
+              <xhtml:strong><?php echo htmlspecialchars($item['name']); ?></xhtml:strong><xhtml:br/>
+              <xhtml:small class="svg-text-muted">Status: <?php echo htmlspecialchars($item['status']); ?> | ID: <?php echo $item['id']; ?></xhtml:small>
+            </xhtml:div>
+            <xhtml:div class="svg-flex-row svg-flex-gap-small">
+              <xhtml:button class="svg-btn-warning" onclick="editItem(<?php echo $item['id']; ?>)">Edit</xhtml:button>
+              <xhtml:button class="svg-btn-danger" onclick="deleteItem(<?php echo $item['id']; ?>)">Delete</xhtml:button>
+            </xhtml:div>
+          </xhtml:div>
+          <?php endforeach; ?>
+          
+        </xhtml:div>
+      </xhtml:div>
+
+    </xhtml:div>
+  </foreignObject>
+
+  <!-- Action Buttons -->
+  <foreignObject x="50" y="540" width="900" height="60">
+    <xhtml:div class="svg-flex-between">
+      <xhtml:div class="svg-flex-row svg-flex-gap-normal">
+        <xhtml:button class="svg-btn-secondary" onclick="exportData()">Export Data</xhtml:button>
+        <xhtml:button class="svg-btn-secondary" onclick="importData()">Import Data</xhtml:button>
+        <xhtml:button class="svg-btn-secondary" onclick="clearAll()">Clear All</xhtml:button>
+      </xhtml:div>
+      
+      <xhtml:div class="svg-text-muted" style="font-size: 12px;">
+        Total Items: <xhtml:span id="item-count"><?php echo count($sampleData); ?></xhtml:span>
+      </xhtml:div>
+    </xhtml:div>
+  </foreignObject>
+
+  <!-- Framework JavaScript -->
+  <script type="text/javascript">
+    <![CDATA[
+    // Framework initialization - paste from svg-php-framework.js or include externally
+    
+    // ==========================================================================
+    // APPLICATION LOGIC
+    // ==========================================================================
+    
+    let items = <?php echo json_encode($sampleData); ?>;
+    let nextId = Math.max(...items.map(item => item.id)) + 1;
+
+    // Add new item
+    function addNewItem() {
+      const name = document.getElementById('item-name').value.trim();
+      const status = document.getElementById('item-status').value;
+      
+      if (!name) {
+        alert('Please enter an item name');
+        return;
+      }
+
+      const newItem = {
+        id: nextId++,
+        name: name,
+        status: status
+      };
+
+      items.push(newItem);
+      renderItems();
+      updateItemCount();
+      
+      // Reset form
+      document.getElementById('item-name').value = '';
+      document.getElementById('item-status').value = 'active';
+      
+      console.log('Item added:', newItem);
+    }
+
+    // Edit item
+    function editItem(id) {
+      const item = items.find(item => item.id === id);
+      if (!item) return;
+      
+      const newName = prompt('Edit item name:', item.name);
+      if (newName !== null && newName.trim()) {
+        item.name = newName.trim();
+        renderItems();
+        console.log('Item edited:', item);
+      }
+    }
+
+    // Delete item
+    function deleteItem(id) {
+      if (confirm('Are you sure you want to delete this item?')) {
+        items = items.filter(item => item.id !== id);
+        renderItems();
+        updateItemCount();
+        console.log('Item deleted:', id);
+      }
+    }
+
+    // Render items
+    function renderItems() {
+      const container = document.getElementById('items-container');
+      if (!container) return;
+
+      // Clear existing items
+      container.innerHTML = '';
+
+      if (items.length === 0) {
+        container.innerHTML = '<div class="svg-text-muted svg-text-center svg-margin-top-large">No items yet. Add your first item above!</div>';
+        return;
+      }
+
+      // Render each item
+      items.forEach(item => {
+        const itemDiv = document.createElementNS('http://www.w3.org/1999/xhtml', 'div');
+        itemDiv.className = 'svg-task-item';
+
+        const itemContent = document.createElementNS('http://www.w3.org/1999/xhtml', 'div');
+        itemContent.className = 'svg-task-content';
+        itemContent.innerHTML = `
+          <strong>${item.name}</strong><br>
+          <small class="svg-text-muted">Status: ${item.status} | ID: ${item.id}</small>
+        `;
+
+        const itemButtons = document.createElementNS('http://www.w3.org/1999/xhtml', 'div');
+        itemButtons.className = 'svg-flex-row svg-flex-gap-small';
+
+        const editBtn = document.createElementNS('http://www.w3.org/1999/xhtml', 'button');
+        editBtn.className = 'svg-btn-warning';
+        editBtn.textContent = 'Edit';
+        editBtn.onclick = () => editItem(item.id);
+
+        const deleteBtn = document.createElementNS('http://www.w3.org/1999/xhtml', 'button');
+        deleteBtn.className = 'svg-btn-danger';
+        deleteBtn.textContent = 'Delete';
+        deleteBtn.onclick = () => deleteItem(item.id);
+
+        itemButtons.appendChild(editBtn);
+        itemButtons.appendChild(deleteBtn);
+        
+        itemDiv.appendChild(itemContent);
+        itemDiv.appendChild(itemButtons);
+        container.appendChild(itemDiv);
+      });
+
+      console.log('Items rendered:', items.length);
+    }
+
+    // Update item count
+    function updateItemCount() {
+      const countElement = document.getElementById('item-count');
+      if (countElement) {
+        countElement.textContent = items.length;
+      }
+    }
+
+    // Export data
+    function exportData() {
+      const dataStr = JSON.stringify(items, null, 2);
+      const dataBlob = new Blob([dataStr], { type: 'application/json' });
+      const url = URL.createObjectURL(dataBlob);
+      
+      const tempLink = document.createElementNS('http://www.w3.org/1999/xhtml', 'a');
+      tempLink.href = url;
+      tempLink.download = 'app-data-export.json';
+      tempLink.style.display = 'none';
+      
+      document.body.appendChild(tempLink);
+      setTimeout(() => {
+        tempLink.click();
+        document.body.removeChild(tempLink);
+        URL.revokeObjectURL(url);
+      }, 10);
+      
+      console.log('Data exported');
+    }
+
+    // Import data
+    function importData() {
+      const input = document.createElementNS('http://www.w3.org/1999/xhtml', 'input');
+      input.type = 'file';
+      input.accept = '.json';
+      input.style.display = 'none';
+      
+      input.onchange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = (e) => {
+            try {
+              const importedItems = JSON.parse(e.target.result);
+              if (Array.isArray(importedItems)) {
+                items = importedItems;
+                nextId = Math.max(...items.map(item => item.id)) + 1;
+                renderItems();
+                updateItemCount();
+                console.log('Data imported:', items.length, 'items');
+              } else {
+                alert('Invalid file format');
+              }
+            } catch (error) {
+              console.error('Import error:', error);
+              alert('Failed to import data');
+            }
+          };
+          reader.readAsText(file);
+        }
+      };
+      
+      document.body.appendChild(input);
+      input.click();
+      document.body.removeChild(input);
+    }
+
+    // Clear all items
+    function clearAll() {
+      if (confirm('Are you sure you want to clear all items?')) {
+        items = [];
+        nextId = 1;
+        renderItems();
+        updateItemCount();
+        console.log('All items cleared');
+      }
+    }
+
+    // Initialize app
+    function initApp() {
+      console.log('App initialized with', items.length, 'items');
+      updateItemCount();
+    }
+
+    // Auto-initialize when DOM is ready
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initApp);
+    } else {
+      initApp();
+    }
+    ]]>
+  </script>
+
+</svg>

@@ -295,8 +295,12 @@
           display: flex;
           justify-content: space-between;
           align-items: center;
-          ${task.status === 'completed' ? 'opacity: 0.5;' : ''}
         `;
+        
+        // Set opacity separately for completed tasks
+        if (task.status === 'completed') {
+          taskDiv.style.opacity = '0.5';
+        }
 
         // Task content
         const taskContent = document.createElementNS('http://www.w3.org/1999/xhtml', 'div');
