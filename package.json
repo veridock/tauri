@@ -11,7 +11,7 @@
     "tauri": "tauri",
     "tauri-verbose": "tauri dev --verbose 2>&1 | tee logs/tauri_$(date +%Y%m%d_%H%M%S).log",
     "php-server": "php -S localhost:${PHP_SERVER_PORT:-8088}",
-    "php-server-verbose": "./start-php-server-verbose.sh",
+    "php-server-verbose": "./start.sh",
     "dev-with-php": "concurrently \"npm run dev\" \"npm run php-server\" --names \"VITE,PHP\" --prefix-colors \"cyan,yellow\"",
     "dev-with-php-verbose": "concurrently \"npm run dev-verbose\" \"npm run php-server-verbose\" --names \"VITE,PHP\" --prefix-colors \"cyan,yellow\"",
     "tauri-with-php": "concurrently \"npm run tauri dev\" \"npm run php-server\" --names \"TAURI,PHP\" --prefix-colors \"green,yellow\"",

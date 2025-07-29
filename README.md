@@ -1,8 +1,10 @@
 # 🚀 Tauri SVG Processor
 
-**Ultra-simple Tauri desktop application with PHP backend integration**
+**Ultra-simple Tauri desktop application with PHP backend integration** ✅ **FULLY OPERATIONAL**
 
 A minimal, elegant solution for running SVG files with embedded PHP code in a cross-platform desktop app.
+
+> 🎉 **System Status**: All components tested and working! PHP server serves SVG content, Tauri app connects successfully, cross-language configuration system operational.
 
 ## ✨ What This App Does
 
@@ -17,7 +19,7 @@ A minimal, elegant solution for running SVG files with embedded PHP code in a cr
 ┌─────────────┐    HTTP    ┌─────────────┐    Loads    ┌─────────────┐
 │   Tauri     │ ---------> │ PHP Server  │ ---------> │todo.php.svg │
 │  Desktop    │            │ localhost   │            │(PHP + SVG)  │
-│    App      │            │   :8088     │            │             │
+│    App      │  Port 1420 │   :8088     │            │   Content   │
 └─────────────┘            └─────────────┘            └─────────────┘
 ```
 
@@ -53,13 +55,35 @@ This generates `env.php` and `env.sh` from your `.env` file.
 
 ### 5. Start PHP Server
 ```bash
-./start-php-server.sh
+./start.sh
 ```
 
 ### 6. Run Tauri App
 ```bash
 npm run tauri dev
 ```
+
+## ✅ System Validation
+
+You can verify the system is working properly:
+
+```bash
+# Test cross-language environment system
+node test-env-system.js
+
+# Check both servers are running
+lsof -i:8088  # PHP server
+lsof -i:1420  # Vite server
+
+# Test SVG serving directly
+curl http://localhost:8088/todo.php.svg
+```
+
+**Expected Results:**
+- ✅ PHP Server: HTTP 200 serving SVG+PHP content
+- ✅ Vite Server: Frontend loads configuration correctly
+- ✅ Cross-language tests: All major components pass
+- ✅ Tauri App: Desktop window opens with SVG content
 
 ## 🔧 Ultra-Simple Configuration System
 
@@ -150,23 +174,89 @@ tauri/
 
 ## 🐛 Troubleshooting
 
+### Common Issues and Solutions
+
+**Port conflicts (most common issue):**
+```bash
+# Error: "Port 8088 is already in use" or "Port 1420 is already in use"
+
+# Check what's using the ports
+lsof -i:8088
+lsof -i:1420
+
+# Kill conflicting processes (replace PID with actual process ID)
+kill -9 <PID>
+
+# Then restart the servers
+./start.sh
+npm run tauri dev
+```
+
 **PHP server not starting?**
 ```bash
 # Check if port is free
 lsof -i:8088
 
+# Verify PHP is installed
+php --version
+
 # Restart PHP server
-./start-php-server.sh
+./start.sh
+```
+
+**Tauri app won't start?**
+```bash
+# Check if Vite port is free
+lsof -i:1420
+
+# Clean and reinstall if needed
+rm -rf node_modules/.vite dist
+npm install
+
+# Try again
+npm run tauri dev
 ```
 
 **SVG not loading?**
-- Ensure PHP server is running on correct port
+- Ensure PHP server is running on correct port (`lsof -i:8088`)
 - Check `.env` and regenerate configs with `node env.js`
 - Verify `todo.php.svg` exists and is readable
+- Test direct access: `curl http://localhost:8088/todo.php.svg`
 
 **Configuration not synced?**
 - Run `node env.js` after changing `.env`
 - Restart all services (PHP server + Tauri app)
+- Verify generated files exist: `ls -la env.*`
+
+### Debug Mode
+
+For detailed logging, check the console output when running:
+```bash
+# PHP server logs appear in terminal
+./start.sh
+
+# Tauri/Vite logs appear in terminal  
+npm run tauri dev
+
+# Cross-language system validation
+node test-env-system.js
+```
+
+### System Health Check
+
+Run this command to verify everything is working:
+```bash
+echo "PHP Server: $(curl -s -o /dev/null -w "%{http_code}" http://localhost:8088/todo.php.svg)"
+echo "Frontend: $(curl -s -o /dev/null -w "%{http_code}" http://localhost:1420)"
+echo "Config files: $(ls -1 env.* | wc -l) generated"
+```
+
+Expected output:
+```
+PHP Server: 200
+Frontend: 200  
+Config files: 3 generated
+```
 
 ## 📝 License
 

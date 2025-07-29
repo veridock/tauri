@@ -153,7 +153,7 @@
                     }
                 })
                 .catch(error => {
-                    document.getElementById('status').innerHTML = `❌ PHP server not running - Start with: ./start-php-server.sh`;
+                    document.getElementById('status').innerHTML = `❌ PHP server not running - Start with: ./start.sh`;
                     // Retry every 5 seconds
                     setTimeout(initApp, 5000);
                 });
