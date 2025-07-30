@@ -1,4 +1,15 @@
-<?php
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xhtml="http://www.w3.org/1999/xhtml" width="1024" height="800" viewBox="0 0 1024 800">
+    <title>PDF PHP SVGProcessor PWA - <?php echo date('H:i:s') ?> -</title>
+    <desc>
+        Advanced PDF conversion and analysis tool
+    </desc>
+    <defs>
+        <style>
+            *{font-family:system-ui,sans-serif}.button{fill:#e74c3c;cursor:pointer}.button:hover{fill:#c0392b}.button-text{fill:#fff;font-size:11px;text-anchor:middle}.input{fill:#fff;stroke:#ced4da}
+        </style>
+    </defs>
+
+    <?php
 // PDF Processor - Advanced PHP+SVG PWA with PDF conversion and analysis
 // CRITICAL: Handle ALL AJAX requests BEFORE any SVG output
 
@@ -180,17 +191,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     logMessage("Files in output directory: " . count($outputFiles) . " files");
 }
 ?>
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xhtml="http://www.w3.org/1999/xhtml" width="1024" height="800" viewBox="0 0 1024 800">
-    <title>PDF PHP SVGProcessor PWA - <?php echo date('H:i:s') ?> -</title>
-    <desc>
-        Advanced PDF conversion and analysis tool
-    </desc>
-    <defs>
-        <style>
-            *{font-family:system-ui,sans-serif}.button{fill:#e74c3c;cursor:pointer}.button:hover{fill:#c0392b}.button-text{fill:#fff;font-size:11px;text-anchor:middle}.input{fill:#fff;stroke:#ced4da}
-        </style>
-    </defs>
-
+    
     <path fill="#e74c3c" d="M0 0h1000v60H0z"/>
     <text x="20" y="30" style="fill:#e74c3c;font-size:20px;font-weight:700">📄 PDF Processor - <?php echo date('H:i:s') ?> </text>
     <text x="20" y="48" fill="#fadbd8" font-size="12">Convert PDFs to PNG/JPG/SVG • Extract metadata</text>

@@ -3,7 +3,7 @@
 export VITE_PORT="1420"
 export PHP_SERVER_PORT="8088"
 export VITE_PHP_SERVER_PORT="8088"
-export VITE_FILE_PHP="todo.php.svg"
+export VITE_FILE_PHP="assets/svg/todo.php.svg"
 export WINDOW_WIDTH="1050"
 export WINDOW_HEIGHT="780"
 export SVG_WIDTH="1000"

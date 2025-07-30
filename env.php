@@ -3,7 +3,7 @@
 define('VITE_PORT', '1420');
 define('PHP_SERVER_PORT', '8088');
 define('VITE_PHP_SERVER_PORT', '8088');
-define('VITE_FILE_PHP', 'todo.php.svg');
+define('VITE_FILE_PHP', 'assets/svg/todo.php.svg');
 define('WINDOW_WIDTH', '1050');
 define('WINDOW_HEIGHT', '780');
 define('SVG_WIDTH', '1000');
