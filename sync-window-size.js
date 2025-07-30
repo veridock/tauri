@@ -14,20 +14,41 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Configuration
-const CONFIG = {
+// Configuration - Load from env.json
+let CONFIG = {
     envFile: '.env',
-    svgFile: 'pdf.php.svg',
+    svgFile: 'todo.php.svg', // fallback
     tauriConfig: 'src-tauri/tauri.conf.json',
     marginWidth: 50,   // Extra width for UI margins
     marginHeight: 80   // Extra height for UI elements
 };
 
 /**
+ * Load configuration from env.json
+ */
+async function loadConfig() {
+    try {
+        const envData = JSON.parse(fs.readFileSync('env.json', 'utf8'));
+        
+        // Update CONFIG with values from env.json
+        if (envData.VITE_FILE_PHP) {
+            CONFIG.svgFile = envData.VITE_FILE_PHP;
+        }
+        
+        console.log('✅ Config loaded from env.json:', { svgFile: CONFIG.svgFile });
+        return CONFIG;
+    } catch (error) {
+        console.warn('⚠️ Failed to load env.json, using fallback config:', error.message);
+        return CONFIG;
+    }
+}
+
+/**
  * Parse SVG file to extract viewBox dimensions
  */
-function parseSVGDimensions(svgPath) {
+async function parseSVGDimensions() {
     try {
+        const svgPath = CONFIG.svgFile;
         const svgContent = fs.readFileSync(svgPath, 'utf8');
         
         // Look for viewBox attribute
@@ -69,7 +90,7 @@ function parseSVGDimensions(svgPath) {
 /**
  * Update .env file with new dimensions
  */
-function updateEnvFile(svgDimensions) {
+async function updateEnvFile(svgDimensions) {
     try {
         let envContent = fs.readFileSync(CONFIG.envFile, 'utf8');
         
@@ -111,7 +132,7 @@ function updateEnvFile(svgDimensions) {
 /**
  * Update Tauri config with new window dimensions
  */
-function updateTauriConfig(windowDimensions) {
+async function updateTauriConfig(windowDimensions) {
     try {
         const configPath = CONFIG.tauriConfig;
         
@@ -150,15 +171,18 @@ function updateTauriConfig(windowDimensions) {
 /**
  * Main sync function
  */
-function syncWindowSize() {
+async function syncWindowSize() {
     console.log('🔄 Syncing window size with SVG dimensions...');
     console.log('==========================================');
     
+    // Load config from env.json
+    await loadConfig();
+    
     // Step 1: Parse SVG dimensions
-    const svgDimensions = parseSVGDimensions(CONFIG.svgFile);
+    const svgDimensions = await parseSVGDimensions();
     
     // Step 2: Update .env file
-    const windowDimensions = updateEnvFile(svgDimensions);
+    const windowDimensions = await updateEnvFile(svgDimensions);
     
     if (!windowDimensions) {
         console.log('❌ Failed to update .env file');
@@ -166,7 +190,7 @@ function syncWindowSize() {
     }
     
     // Step 3: Update Tauri config
-    const tauriSuccess = updateTauriConfig(windowDimensions);
+    const tauriSuccess = await updateTauriConfig(windowDimensions);
     
     if (!tauriSuccess) {
         console.log('❌ Failed to update Tauri config');
@@ -183,7 +207,10 @@ function syncWindowSize() {
 
 // Run if called directly
 if (import.meta.url === `file://${__filename}`) {
-    syncWindowSize();
+    syncWindowSize().catch(error => {
+        console.error('❌ Error during window size sync:', error);
+        process.exit(1);
+    });
 }
 
 export { syncWindowSize, parseSVGDimensions, updateEnvFile, updateTauriConfig };

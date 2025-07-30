@@ -181,7 +181,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 }
 ?>
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xhtml="http://www.w3.org/1999/xhtml" width="1024" height="800" viewBox="0 0 1024 800">
-    <title>PDF PHP SVGProcessor PWA</title>
+    <title>PDF PHP SVGProcessor PWA - <?php echo date('H:i:s') ?> -</title>
     <desc>
         Advanced PDF conversion and analysis tool
     </desc>
@@ -192,7 +192,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     </defs>
 
     <path fill="#e74c3c" d="M0 0h1000v60H0z"/>
-    <text x="20" y="30" style="fill:#e74c3c;font-size:20px;font-weight:700">📄 PDF Processor</text>
+    <text x="20" y="30" style="fill:#e74c3c;font-size:20px;font-weight:700">📄 PDF Processor - <?php echo date('H:i:s') ?> </text>
     <text x="20" y="48" fill="#fadbd8" font-size="12">Convert PDFs to PNG/JPG/SVG • Extract metadata</text>
     <rect width="960" height="120" x="20" y="80" rx="5" style="fill:#f8f9fa;stroke:#dee2e6"/>
     <text x="40" y="105" fill="#495057" font-size="12">PDF File:</text>

@@ -14,8 +14,8 @@
     "windows": [
       {
         "title": "Tauri SVG Processor",
-        "width": 1074,
-        "height": 880,
+        "width": 1050,
+        "height": 780,
         "resizable": true,
         "center": true
       }

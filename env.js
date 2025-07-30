@@ -67,7 +67,20 @@ export function generateJSONConfig(env, outputPath = 'env.json') {
         Object.entries(env).filter(([key]) => key.startsWith('VITE_'))
     );
     
-    const jsonContent = JSON.stringify(frontendEnv, null, 2);
+    // Resolve any shell-style variables (${VAR}) to actual values
+    const resolvedEnv = {};
+    for (const [key, value] of Object.entries(frontendEnv)) {
+        let resolvedValue = value;
+        
+        // Replace ${VARIABLE_NAME} with actual values from env
+        resolvedValue = resolvedValue.replace(/\$\{([^}]+)\}/g, (match, varName) => {
+            return env[varName] || match; // Use env value or keep original if not found
+        });
+        
+        resolvedEnv[key] = resolvedValue;
+    }
+    
+    const jsonContent = JSON.stringify(resolvedEnv, null, 2);
     
     fs.writeFileSync(outputPath, jsonContent);
     console.log(`✅ Generated JSON config: ${outputPath}`);
