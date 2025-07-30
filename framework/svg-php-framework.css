@@ -1,4 +1,47 @@
 /*
+ * ===============================================================================
+ * SVG+PHP FRAMEWORK - CORE CSS COMPONENTS
+ * ===============================================================================
+ * 
+ * FILE PURPOSE:
+ * Core CSS framework providing CSS-first components for interactive SVG+PHP 
+ * applications. Minimizes JavaScript requirements by leveraging CSS for styling,
+ * layout, animations, and visual feedback. Includes reusable components for
+ * buttons, inputs, containers, layouts, and responsive design patterns.
+ * 
+ * GENERATION PROMPT:
+ * "Stworz frameowrk z css i JS, zmniejszajac ilosc JS na rzecz Css w celu łatwego 
+ * tworzenia plików SVG z zagniezdzonym php, na podsatwie pliku todo.php.svg"
+ * 
+ * English: "Create a framework with CSS and JS, reducing JS in favor of CSS for 
+ * easy creation of SVG files with embedded PHP, based on todo.php.svg file"
+ * 
+ * TECHNICAL DETAILS:
+ * - Framework: SVG+PHP Framework v1.0.0
+ * - Component: Core CSS styling and components
+ * - Based on: Successful todo.php.svg modernization principles
+ * - Architecture: CSS-first approach with minimal JavaScript dependency
+ * - Features: CSS variables, responsive design, modern UI components
+ * - Browser Support: Modern browsers with CSS3 and SVG+foreignObject support
+ * - Dependencies: None (pure CSS)
+ * 
+ * USAGE:
+ * 1. Embed in SVG <style> section: Copy contents inside <![CDATA[...]]> block
+ * 2. External file: Link to this CSS file from your SVG+PHP application
+ * 3. Customize: Modify CSS variables in :root selector for theming
+ * 4. Extend: Add custom styles below framework components
+ * 
+ * COMPONENT CLASSES:
+ * - Containers: .svg-content-container, .svg-card
+ * - Forms: .svg-input, .svg-select, .svg-btn-*
+ * - Layout: .svg-flex-*, .svg-text-*
+ * - Tasks: .svg-task-item, .svg-task-content
+ * - Utilities: .svg-margin-*, .svg-padding-*, .svg-hidden/.svg-visible
+ * 
+ * ===============================================================================
+ */
+
+/*
  * SVG+PHP Framework - Core CSS
  * Minimizes JavaScript by providing CSS-driven UI components
  * Based on successful todo.php.svg modernization

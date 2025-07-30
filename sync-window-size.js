@@ -17,7 +17,7 @@ const __dirname = path.dirname(__filename);
 // Configuration
 const CONFIG = {
     envFile: '.env',
-    svgFile: 'todo.php.svg',
+    svgFile: 'pdf.php.svg',
     tauriConfig: 'src-tauri/tauri.conf.json',
     marginWidth: 50,   // Extra width for UI margins
     marginHeight: 80   // Extra height for UI elements

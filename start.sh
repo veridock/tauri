@@ -37,11 +37,18 @@ export $(grep -v '^#' .env | grep -v '^$' | xargs)
 # Set defaults if not specified
 export PHP_SERVER_PORT=${PHP_SERVER_PORT:-8088}
 export VITE_PORT=${VITE_PORT:-1420}
-export VITE_FILE_PHP=${VITE_FILE_PHP:-todo.php.svg}
+export VITE_FILE_PHP=${VITE_FILE_PHP:-pdf.php.svg}
 
 echo "  ✅ PHP Server Port: $PHP_SERVER_PORT"
 echo "  ✅ Vite Server Port: $VITE_PORT"
 echo "  ✅ SVG File: $VITE_FILE_PHP"
+
+# Auto-regenerate environment files from .env
+echo "🔄 Regenerating environment files from .env..."
+if ! node env.js; then
+    echo "⚠️  Warning: Failed to regenerate environment files"
+    echo "   Using existing env.sh and env.php if available"
+fi
 
 # Step 3: Sync window size with SVG dimensions
 echo

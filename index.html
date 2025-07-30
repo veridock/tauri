@@ -101,7 +101,7 @@
 <body>
     <div class="container">
         <div class="server-info" id="server-info">
-            Server: localhost:<span id="server-port">8088</span> | File: <span id="svg-file">todo.php.svg</span>
+            Server: localhost:<span id="server-port">8088</span> | File: <span id="svg-file">pdf.php.svg</span>
         </div>
         
         <div class="svg-container">
@@ -121,25 +121,41 @@
     </div>
 
     <script>
-        // ULTRA-SIMPLE CONFIG SYSTEM
-        const CONFIG = {
+        // DYNAMIC CONFIG SYSTEM - Load from env.json
+        let CONFIG = {
             phpPort: '8088',
-            svgFile: 'todo.php.svg',
+            svgFile: 'todo.php.svg', // fallback
             checkInterval: 2000
         };
 
-        // Get config from URL params (for testing)
-        function getFromUrl() {
-            const params = new URLSearchParams(window.location.search);
-            if (params.get('port')) CONFIG.phpPort = params.get('port');
-            if (params.get('file')) CONFIG.svgFile = params.get('file');
+        // Load config from env.json
+        async function loadConfig() {
+            try {
+                const response = await fetch('./env.json');
+                const envConfig = await response.json();
+                
+                // Update CONFIG with values from env.json
+                CONFIG.phpPort = envConfig.VITE_PHP_SERVER_PORT || '8088';
+                CONFIG.svgFile = envConfig.VITE_FILE_PHP || 'todo.php.svg';
+                
+                // Update display elements
+                const serverPortEl = document.getElementById('server-port');
+                const svgFileEl = document.getElementById('svg-file'); 
+                
+                if (serverPortEl) serverPortEl.textContent = CONFIG.phpPort;
+                if (svgFileEl) svgFileEl.textContent = CONFIG.svgFile;
+                
+                console.log('✅ Config loaded from env.json:', CONFIG);
+                return CONFIG;
+            } catch (error) {
+                console.warn('⚠️ Failed to load env.json, using fallback config:', error);
+                return CONFIG;
+            }
         }
 
-        // Initialize app with ultra-simple config
-        function initApp() {
-            // Update UI with config
-            document.getElementById('server-port').textContent = CONFIG.phpPort;
-            document.getElementById('svg-file').textContent = CONFIG.svgFile;
+        // Initialize app with dynamic config
+        async function initApp() {
+            await loadConfig();
             
             // Start checking for server and loading SVG
             checkServerAndLoadSVG();
@@ -190,7 +206,6 @@
         }
 
         // Initialize when page loads
-        getFromUrl();
         initApp();
     </script>
 </body>

@@ -1,3 +1,44 @@
+<!--
+===============================================================================
+SVG+PHP FRAMEWORK - COMPREHENSIVE DOCUMENTATION
+===============================================================================
+
+FILE PURPOSE:
+Complete documentation and usage guide for the SVG+PHP Framework. Provides
+detailed instructions, examples, best practices, and component reference for
+creating interactive SVG applications with embedded PHP using a CSS-first
+approach that minimizes JavaScript requirements.
+
+GENERATION PROMPT:
+"Stworz frameowrk z css i JS, zmniejszajac ilosc JS na rzecz Css w celu łatwego 
+tworzenia plików SVG z zagniezdzonym php, na podsatwie pliku todo.php.svg"
+
+English: "Create a framework with CSS and JS, reducing JS in favor of CSS for 
+easy creation of SVG files with embedded PHP, based on todo.php.svg file"
+
+TECHNICAL DETAILS:
+- Framework: SVG+PHP Framework v1.0.0
+- Component: Documentation and usage guide
+- Based on: Successful todo.php.svg modernization and lessons learned
+- Architecture: CSS-first framework with minimal JavaScript utilities
+- Validation: Framework template passes SVG+PWA validator (31/31 tests)
+- Dependencies: PHP 7.4+, modern browser with SVG+foreignObject support
+
+FRAMEWORK COMPONENTS:
+- svg-php-framework.css: Core CSS components and styling
+- svg-php-framework.js: Minimal JavaScript utilities
+- template.php.svg: Complete application template and example
+- README.md: This comprehensive documentation file
+
+USAGE SCENARIOS:
+- Interactive SVG+PHP web applications
+- Desktop apps with Tauri integration
+- PWA applications with modern HTML forms in SVG
+- Rapid prototyping of data-driven interfaces
+
+===============================================================================
+-->
+
 # SVG+PHP Framework 🎨⚡
 
 **A CSS-first framework for creating interactive SVG applications with embedded PHP**

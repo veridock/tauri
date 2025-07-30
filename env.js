@@ -60,6 +60,19 @@ ${Object.entries(env).map(([key, value]) => `export ${key}="${value}"`).join('\n
     console.log(`✅ Generated shell config: ${outputPath}`);
 }
 
+// Generate JSON config for frontend use
+export function generateJSONConfig(env, outputPath = 'env.json') {
+    // Filter to only include frontend-accessible variables (VITE_ prefixed)
+    const frontendEnv = Object.fromEntries(
+        Object.entries(env).filter(([key]) => key.startsWith('VITE_'))
+    );
+    
+    const jsonContent = JSON.stringify(frontendEnv, null, 2);
+    
+    fs.writeFileSync(outputPath, jsonContent);
+    console.log(`✅ Generated JSON config: ${outputPath}`);
+}
+
 // Main function - generate only what's needed
 if (import.meta.url === `file://${process.argv[1]}`) {
     const env = loadEnv();
@@ -70,9 +83,12 @@ if (import.meta.url === `file://${process.argv[1]}`) {
     }
     
     // Generate shell config if shell scripts exist  
-    if (fs.existsSync('start-php-server.sh')) {
+    if (fs.existsSync('start.sh')) {
         generateShellConfig(env);
     }
+    
+    // Generate JSON config for frontend use
+    generateJSONConfig(env);
     
     console.log('🚀 Simple env system ready!');
     console.log('📝 Variables:', Object.keys(env).join(', '));

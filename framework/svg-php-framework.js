@@ -1,4 +1,47 @@
 /*
+ * ===============================================================================
+ * SVG+PHP FRAMEWORK - MINIMAL JAVASCRIPT CORE
+ * ===============================================================================
+ * 
+ * FILE PURPOSE:
+ * Minimal JavaScript framework providing essential utilities for SVG+PHP 
+ * applications while maximizing CSS-driven functionality. Includes SVG-context
+ * compatible element creation, data management, list handling, and utility 
+ * functions. Designed to complement CSS-first approach with minimal JS footprint.
+ * 
+ * GENERATION PROMPT:
+ * "Stworz frameowrk z css i JS, zmniejszajac ilosc JS na rzecz Css w celu łatwego 
+ * tworzenia plików SVG z zagniezdzonym php, na podsatwie pliku todo.php.svg"
+ * 
+ * English: "Create a framework with CSS and JS, reducing JS in favor of CSS for 
+ * easy creation of SVG files with embedded PHP, based on todo.php.svg file"
+ * 
+ * TECHNICAL DETAILS:
+ * - Framework: SVG+PHP Framework v1.0.0
+ * - Component: Minimal JavaScript utilities and helpers
+ * - Based on: Lessons learned from todo.php.svg modernization challenges
+ * - Architecture: Minimal JS with CSS-first philosophy
+ * - Features: SVG-context element creation, data persistence, list management
+ * - Browser Support: Modern browsers with ES6+ and SVG+foreignObject support
+ * - Dependencies: None (vanilla JavaScript)
+ * 
+ * KEY FEATURES:
+ * - SVG Context Compatibility: Uses createElementNS() for proper HTML in SVG
+ * - Data Management: localStorage sync with JSON import/export
+ * - List Management: Generic patterns for dynamic content rendering
+ * - Utility Functions: ID generation, date formatting, debouncing
+ * - Event System: Auto-binding and component lifecycle management
+ * 
+ * USAGE:
+ * 1. Embed in SVG <script> section: Copy contents inside <![CDATA[...]]> block
+ * 2. External file: Include this JS file in your SVG+PHP application
+ * 3. Global instance: Access via window.SVGPHPFramework or window.SPF
+ * 4. Helper functions: Use spfElement(), spfContainer(), etc. for quick creation
+ * 
+ * ===============================================================================
+ */
+
+/*
  * SVG+PHP Framework - Minimal JavaScript Core
  * Provides essential functionality with CSS-first approach
  * Based on successful todo.php.svg modernization
